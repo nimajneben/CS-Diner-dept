@@ -1,0 +1,330 @@
+4. Detailed Design:
+In this section, we outline the detailed functions that will guide the development of our project. The pseudocode provides a comprehensive overview of the system’s architecture and functionality. As we progress further into our project, these pseudocode will evolve, ensuring a flexible and adaptive development process.
+
+User registration:
+This function helps the system register users and save their entries into the user database.
+
+Function RegisterUser(firstName, lastName, username, email, password):
+    If IsEmpty(firstName) or IsEmpty(lastName) or IsEmpty(userName) or IsEmpty(email) or IsEmpty(password):
+        Return "All fields are required."
+If not IsValidEmail(email):
+        Return "Please enter a valid email address."
+ If UserExists(userName, email):
+        Return "User with the given username or email already exists."
+  encryptedPassword = EncryptPassword(password)
+ newUser = {
+        "firstName": firstName,
+        "lastName": lastName,
+        "userName": userName,
+        "email": email,
+        "password": encryptedPassword,
+        "status": "active",
+        "role": "customer", // Assuming default role as customer
+        "warnings": 0, // New user starts with no warnings
+        "vipStatus": False // New user starts as non-VIP
+    }
+
+    result = InsertUserIntoDatabase(newUser)
+ If result is "Success":
+        Return "User registered successfully."
+    Else:
+        Return "Failed to register user. Please try again."
+    End If
+End Function
+
+Function IsEmpty(field):
+    // Check if a field is empty or only contains whitespace
+    Return Trim(field) == ""
+
+Function IsValidEmail(email):
+    // Basic validation for email format
+    pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    Return MatchesPattern(email, pattern)
+
+Function UserExists(userName, email):
+    // Check the database to see if a user exists with the same username or email
+    existingUser = QueryDatabaseForUser(userName, email)
+    Return existingUser is not Null
+
+Function EncryptPassword(password):
+    // Use a hashing algorithm suitable for passwords
+    hashedPassword = HashUsingSecureAlgorithm(password)
+    Return hashedPassword
+
+Function InsertUserIntoDatabase(user):
+    // Insert the new user into the database and return the result
+    databaseResult = DatabaseInsert(user)
+    Return databaseResult
+
+Upgrade User:
+A user based on his rating gets promoted to VIP status. If a customer spends more than $500 or places 50 orders as a registered customer, they are elevated to a VIP status.
+
+Function UpgradeUser(user):
+	if(user.order_placed >= 50 || user.overall_spend >=500):
+		Add user to VIP user
+
+
+
+Place order:
+	This function helps the customer to place order.
+
+Function PlaceOrder(user, order_details, payment_method):
+    If not CustomerExists(user.id):
+        Return "Invalid customer ID"
+    End If
+
+    order = CreateOrder(order_details)
+    If not CheckFunds(customer_id, order.total_price):
+        FreezeOrder(order.id)
+        RequestAdditionalFunds(customer_id)
+        Return "Order frozen due to insufficient funds"
+    End If
+
+    If ProcessPayment(customer_id, payment_method, order.total_price):
+        SetOrderStatus(order.id, "Confirmed")
+        AssignDelivery(order.id)
+        Return "Order confirmed and delivery assigned"
+    Else
+        Return "Payment failed"
+    End If
+End Function
+
+Function AssignDelivery(order_id):
+    delivery_person = SelectDeliveryPerson()
+    AssignOrderToDeliveryPerson(order_id, delivery_person.id)
+    NotifyDeliveryPerson(delivery_person.id, order_id)
+End Function
+
+Demote Customer:
+	This function is responsible for maintaining the status of customers and will help the manager to maintain the system.
+
+Function DemoteUser(user):
+	if(user.isVIP && user.warning >=2):
+		Add user to regular user
+	if(!user.isVIP && user.warning >= 2):
+		Delete user from database.
+
+Display Warnings:
+	This function displays the number of warnings they have in their account. 
+Function displayWarning(user):
+	print(“ user.name has user.warnings warnings in their account”)
+
+Display the Menu:
+This function will display the menu for registered users, chefs, admins, and surfers. 
+
+Function displayMenu():
+	Display Menu;
+
+Function EditMenu(user):
+	if(user.role == “customer”):
+		print(“Access denied”)
+	Else:
+		Open editMenu //only for chefs and manager
+
+
+
+Adding Menu item:
+This functions saves the new item to the database and attaches the chef name and chef id to the new item.
+
+Function AddMenuItem(user, dish_name, dish_price, dish_description):
+    // Check if the user has the role of a chef
+    If user.role != "chef":
+        Return "Authorization error: User does not have permission to add menu items."
+    End If
+
+    // Validate the dish details
+    If IsEmpty(dish_name) or IsEmpty(dish_price) or IsEmpty(dish_description):
+        Return "Error: Dish name, price, and description are required."
+    End If
+
+    // Ensure the dish price is a valid number
+    If not IsValidPrice(dish_price):
+        Return "Error: Dish price is not valid. Please enter a numeric value."
+    End If
+
+    // Create a new menu item record
+    newMenuItem = {
+        "chefID": user.id,
+        "chefName": user.name,
+        "dishName": dish_name,
+        "dishDescription": dish_description,
+        "dishPrice": dish_price
+    }
+
+    // Attempt to append the new item to the menu in the database
+    result = SaveMenuItemToDatabase(newMenuItem)
+
+    // Check the result of the database operation
+    If result is "Success":
+        Return "New menu item added successfully."
+    Else:
+        Return "Failed to add new menu item to the database."
+    End If
+End Function
+
+Function IsEmpty(value):
+    Return value == Null or value.Trim() == ""
+
+Function IsValidPrice(price):
+    // A regex for price validation can be more sophisticated to handle currency formats
+    Return RegexMatch(price, "^[0-9]+(\.[0-9]{1,2})?$")
+
+Function SaveMenuItemToDatabase(menuItem):
+    // Insert the new menu item into the database
+    Try:
+        DatabaseInsert("Menu", menuItem)
+        Return "Success"
+    Catch DatabaseError:
+        Return "Error"
+    End Try
+End Function
+
+
+Change Employee status:
+	This function is used to upgrade or downgrade the employee’s status judging by user complaints or compliment. If a user gets more than 2 complaints or low avg ratings their salary will be decreased and if they are demoted twice, they are fired. In this case, 2 warnings and they are fired. If the user gets a compliment, their warnings are reduced by one.
+
+
+Function upAndDownEmployee(user):
+if(user.rating <=1 || user.complain <=2):
+	User.warning +=1
+	user.name is demoted.	
+User.salary is decreased.	//chef’s or delivery person’s pay gets decreased and receives a warning
+
+if(user.warning > 2)
+	user.name is fired.  //chef or delivery person is fired
+if(user.compliment >= 2 || user.ratings >=3)
+	User.warning -= 1
+	User.complaint -= 1
+
+Manager’s View:
+This function will show what the manager can view after logging in. the manager will be allowed to edit and view the menu, check delivery status, order and handle complaints and compliments.
+
+Function manager_view(user)
+	if(user.role == “manager”):
+		editMenu();
+		Order();
+		displayMenu();
+
+
+Delete User:
+This function will help the manager handle user accounts if the user wants to close their account or is kicked off the system.
+Function deleteUser(user):
+	if(user.ratings < 1 || user.WantsOff):   //if user wants to turn off their account
+		Delete the account for the user and refund the deposit money.
+
+Complain about importer:
+This function will be used when the chefs want to complain about the quality of the ingredients from the importer.
+
+Function LodgeComplaintAboutImporter(chef_id, importer_id, complaint_details):
+    // Check if the chef ID is valid
+    If not IsValidChef(chef_id):
+        Return "Error: Invalid chef ID."
+
+    // Check if the importer ID is valid
+    If not IsValidImporter(importer_id):
+        Return "Error: Invalid importer ID."
+
+    // Ensure that complaint details are provided
+    If IsEmpty(complaint_details):
+        Return "Error: Complaint details cannot be empty."
+
+    // Create a complaint record
+    complaintRecord = {
+        "chefID": chef_id,
+        "importerID": importer_id,
+        "complaintDetails": complaint_details,
+        "complaintStatus": "Pending",
+        "timestamp": GetCurrentTimestamp()
+    }
+
+    // Save the complaint to the database
+    result = SaveComplaintToDatabase(complaintRecord)
+
+
+Function NotifyManagerOfComplaint(complaintRecord):
+    // Notify the manager about the complaint via email or an internal notification system
+    manager = where user.role == “manager”
+    notificationMessage = "New complaint received from Chef ID " + complaintRecord.chefID
+    SendNotification(manager.id, notificationMessage)
+
+Dispute complaint from importers:
+	This function helps the importers to dispute any complaints against them from the chefs.
+
+
+
+
+Function DisputeComplaint(importer_id, complaint_id, dispute_details):
+    // Validate importer's ID
+    If not IsValidImporter(importer_id):
+        Return "Error: Invalid importer ID."
+
+    // Retrieve the complaint from the database
+    complaint = GetComplaintById(complaint_id)
+
+    // Check if the complaint exists and belongs to the importer
+    If complaint is Null or complaint.importerID != importer_id:
+        Return "Error: Complaint not found or does not belong to the importer."
+
+    // Check if the dispute details are provided
+    If IsEmpty(dispute_details):
+        Return "Error: Dispute details cannot be empty."
+
+    // Check if the complaint is already disputed or resolved
+    If complaint.complaintStatus != "Pending":
+        Return "Error: Complaint is already disputed or resolved."
+
+    // Create a dispute record
+    disputeRecord = {
+        "complaintID": complaint_id,
+        "importerID": importer_id,
+        "disputeDetails": dispute_details,
+        "timestamp": GetCurrentTimestamp()
+    }
+
+    // Save the dispute to the database
+    result = SaveDisputeToDatabase(disputeRecord)
+
+    If result is "Success":
+        // Update the complaint status to 'Disputed'
+        UpdateComplaintStatus(complaint_id, "Disputed")
+
+        // Notify the manager of the dispute
+        NotifyManagerOfDispute(disputeRecord)
+
+        Return "Dispute submitted successfully."
+    Else:
+        Return "Failed to submit dispute. Please try again."
+    End If
+End Function
+
+Function IsValidImporter(importer_id):
+    // Check database to confirm importer exists
+    importer = DatabaseQuery("SELECT * FROM Importers WHERE id = ?", importer_id)
+    Return importer is not Null
+
+Function GetComplaintById(complaint_id):
+    // Retrieve complaint from database
+    complaint = DatabaseQuery("SELECT * FROM Complaints WHERE id = ?", complaint_id)
+    Return complaint
+Function SaveDisputeToDatabase(disputeRecord):
+    // Insert the dispute record into the database
+    Try:
+        DatabaseInsert("Disputes", disputeRecord)
+        Return "Success"
+    Catch DatabaseError:
+        Return "Error"
+    End Try
+Function UpdateComplaintStatus(complaint_id, newStatus):
+    // Update the status of the complaint in the database
+    Try:
+        DatabaseUpdate("Complaints", "status", newStatus, "WHERE id = ?", complaint_id)
+        Return "Success"
+    Catch DatabaseError:
+        Return "Error"
+    End Try
+
+Function NotifyManagerOfDispute(disputeRecord):
+    // Notify the manager about the dispute for further review
+    manager = DatabaseQuery(user.role == “manager”)
+    notificationMessage = "Dispute received for Complaint ID " + disputeRecord.complaintID
+    SendNotification(manager.id, notificationMessage)
