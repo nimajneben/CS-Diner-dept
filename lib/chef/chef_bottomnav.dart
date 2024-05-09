@@ -21,11 +21,17 @@ class _ChefNavState extends State<ChefNav> {
   late ChefHome chefHome;
   // late EditMenu editMenu;
   late AddMenuItem addMenu;
+  // late EditMenu editMenu;
+  late AddMenuItem addMenu;
   late ChefProfile chefProfile;
 
   @override
   void initState() {
     // TODO: implement initState
+    chefHome = ChefHome();
+    // editMenu =  EditMenu();
+    addMenu = AddMenuItem();
+    chefProfile = ChefProfile();
     chefHome = ChefHome();
     // editMenu =  EditMenu();
     addMenu = AddMenuItem();
