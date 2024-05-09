@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
 import 'package:manju_restaurant/pages/bottomnav.dart';
 
@@ -130,38 +131,38 @@ Future addDetails(String name, String email) async{
                   ),
           
                   //need a logo or something nice for the login page
-                  Container(
-                    margin: EdgeInsets.only(top: 50, left: 30, right: 30),
-                    child: Column(
-          
-                      children:
-                      [
-          
-                        Center(
-                          child: Text("MANJU ",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold
+                  SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 50, left: 30, right: 30),
+                      child: Column(
+                              
+                        children:
+                        [
+                              
+                          Center(
+                            child: Text("MANJU ",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
-                        ),
-          
-          
-                        /*if we want to add a logo, we can use the Image.asset() widget
-                    plus we need to adjust the size of the image and the space
-                    between the image and the text
-          
-                 */
-                        SizedBox(height: 50,),
-                        SingleChildScrollView(
-                          child: Material(
+                              
+                              
+                          /*if we want to add a logo, we can use the Image.asset() widget
+                      plus we need to adjust the size of the image and the space
+                      between the image and the text
+                              
+                                     */
+                          SizedBox(height: 50,),
+                          Material(
                             elevation: 10,
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
                               padding: EdgeInsets.only(left: 20, right: 20),
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height/1.8,
+                              height: MediaQuery.of(context).size.height/1.5,
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10)
@@ -276,18 +277,18 @@ Future addDetails(String name, String email) async{
                                     
                             ),
                           ),
-                        ),
-                        SizedBox(height: 50,),
-                        GestureDetector(
-                          onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                LogIn()));
-                          },
-                          child: Text("Already have an account? Log In",
-                            style: AppWidget.semiBoldTextFieldStyle(),
+                          SizedBox(height: 50,),
+                          GestureDetector(
+                            onTap:(){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                  LogIn()));
+                            },
+                            child: Text("Already have an account? Log In",
+                              style: AppWidget.semiBoldTextFieldStyle(),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
                 ]
