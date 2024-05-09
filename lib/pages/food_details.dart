@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
@@ -7,7 +8,17 @@ import 'package:flutter/widgets.dart';
 import '../widget/widget_support.dart';
 
 class FoodDetails extends StatefulWidget {
-  const FoodDetails({super.key});
+  String itemName, imageUrl, description, chef, allergens, chefId;
+  double price, rating;
+   FoodDetails({super.key,
+    required this.itemName,
+    required this.imageUrl,
+    required this.description,
+    required this.chef,
+    required this.allergens,
+    required this.chefId,
+    required this.price,
+    required this.rating});
 
   @override
   State<FoodDetails> createState() => _FoodDetailsState();
@@ -15,6 +26,15 @@ class FoodDetails extends StatefulWidget {
 
 class _FoodDetailsState extends State<FoodDetails> {
   int aNumber = 1;
+  double total = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    total = widget.price;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +49,15 @@ class _FoodDetailsState extends State<FoodDetails> {
                 Navigator.pop(context);
               },
               child: Column(children: [Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black)])),
-            Image.asset("images/Salad.jpg",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/2.5,
-            fit:BoxFit.fill,),
+
+              CachedNetworkImage(imageUrl: widget.imageUrl,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height/2.5,
+                fit:BoxFit.fill,),
+            // Image.asset("images/Salad.jpg",
+            //   width: MediaQuery.of(context).size.width,
+            //   height: MediaQuery.of(context).size.height/2.5,
+            // fit:BoxFit.fill,),
             SizedBox(height: 20,),
 
 
@@ -43,7 +68,7 @@ class _FoodDetailsState extends State<FoodDetails> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Mediteranean Salad",
+                  Text(widget.itemName,
                       style: AppWidget.boldTextFieldStyle()),
                 ],
               ),
@@ -55,6 +80,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                   onTap: (){
                     if(aNumber>1){
                       --aNumber;
+                      total = total - widget.price;
                       setState(() {
 
                       });
@@ -77,6 +103,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                 GestureDetector(
                   onTap: (){
                     ++aNumber;
+                    total = widget.price * aNumber;
                     setState(() {
 
                     });
@@ -100,18 +127,17 @@ class _FoodDetailsState extends State<FoodDetails> {
                     
                     Row(children: [Icon(Icons.star, color: Colors.yellow[900],),
                     SizedBox(width: 5,),
-                    Text("4.5", style: AppWidget.semiBoldTextFieldStyle()),],),
+                    Text(widget.rating.toString(), style: AppWidget.semiBoldTextFieldStyle()),],),
                   
 
               ],),
             SizedBox(height: 20,),
-            Text("lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-                style: AppWidget.lightTextFieldStyle(),
+            Text(widget.description, style: AppWidget.lightTextFieldStyle(),
             maxLines: 3,),
             SizedBox(height: 20,),
-            Text("Chef: John Doe", style: AppWidget.semiBoldTextFieldStyle()),
+            Text("Chef: " + widget.chef, style: AppWidget.semiBoldTextFieldStyle()),
             SizedBox(height: 20,),
-            Text("Allergens: Gluten, Soy, Nuts",
+            Text("Allergens: " + widget.allergens,
                 style: AppWidget.semiBoldTextFieldStyle()),
             SizedBox(height: 20,),
             Spacer(),
@@ -127,7 +153,7 @@ class _FoodDetailsState extends State<FoodDetails> {
                       children: [
                     Text("Total Price:",
                         style: AppWidget.boldTextFieldStyle()),
-                    Text("\$12.00", style: AppWidget.headLineTextFieldStyle())
+                    Text("\$" + total.toStringAsFixed(2), style: AppWidget.headLineTextFieldStyle())
                   ]
                   ),
                   Container(
