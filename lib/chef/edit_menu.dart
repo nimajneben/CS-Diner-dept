@@ -14,17 +14,29 @@ class _EditMenuState extends State<EditMenu> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Edit Menu", style: AppWidget.boldTextFieldStyle(),),
+        title: Text("Add Menu", style: AppWidget.boldTextFieldStyle(),),
         centerTitle: true,
         actions: [
           Icon(Icons.logout_sharp, color: Colors.black, size: 30),
           SizedBox(width: 20),]
       ),
 
-      body: Column(children: [
+      body: Container(
         
+        margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+        child: Column(
+          children: [
+            Text("Please select a picture for the menu!", style: AppWidget.boldTextFieldStyle(),),
+          ],
 
-      ],),
+        ),
+
+        
+        ),
+
+
+
+      
     );
   }
 }
