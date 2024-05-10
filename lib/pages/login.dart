@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
+import 'package:manju_restaurant/chef/chef_bottomnav.dart';
+import 'package:manju_restaurant/methods/data.dart';
 import 'package:manju_restaurant/pages/bottomnav.dart';
 import 'package:manju_restaurant/pages/signup.dart';
 
@@ -33,7 +35,16 @@ class _LogInState extends State<LogIn> {
   userLogin() async{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNav()));
+      Future<String> role = DatabaseFunctions().getUserRole(FirebaseAuth.instance.currentUser!.uid);
+      role.then((value) {
+        if(value == "chef"){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ChefNav()));
+        }else{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNav()));
+        }
+      });
+      
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNav()));
     } on FirebaseAuthException catch(e){
       if(e.code == 'user-not-found'){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:

@@ -39,7 +39,7 @@ registration() async {
           password: passwordController.text.trim(),
       );
 
-      addDetails(nameController.text.trim(), emailController.text.trim());
+      addDetails(userCredential.user!.uid, nameController.text.trim(), emailController.text.trim());
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.green,
@@ -69,18 +69,25 @@ registration() async {
   }
 }
 
-Future addDetails(String name, String email) async{
-    await FirebaseFirestore.instance.collection('users').add(
+Future addDetails(String uId, String name, String email) async{
+    await FirebaseFirestore.instance.collection('users').doc(uId).set(
       {
         'name': name,
         'email': email,
-        'isApproved':false,
-        'isSuspended':false,
-        'warning': 0,
-        'deposit': 50.0,
-        'totalOrders': 0,
-        'totalSpent': 0.0,
-        'isVip': false,
+        'role': 'chef',
+        'salary': 60000.0,
+        'warnings': 1,
+        'ratings' : 4.3,
+        'compliments': 1,
+        'complaints': 1,
+        
+        // 'isApproved':false,
+        // 'isSuspended':false,
+        // 'warning': 0,
+        // 'deposit': 50.0,
+        // 'totalOrders': 0,
+        // 'totalSpent': 0.0,
+        // 'isVip': false,
 
 
       }
