@@ -12,6 +12,7 @@ import 'package:flutter/material.dart%20';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:manju_restaurant/chef/chef_bottomnav.dart';
 import 'package:manju_restaurant/methods/data.dart';
 import 'package:manju_restaurant/widget/widget_support.dart';
 
@@ -93,7 +94,7 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
         backgroundColor: Colors.greenAccent,
         content: Text("Item Added Successfully", style: AppWidget.semiBoldTextFieldStyle(),),),
     );});
-
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChefNav()));
     }
   }
 
