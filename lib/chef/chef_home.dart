@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_restaurant/chef/add_menu.dart';
+import 'package:manju_restaurant/methods/data.dart';
+import 'package:manju_restaurant/pages/login.dart';
 import 'package:manju_restaurant/widget/widget_support.dart';
 
 class ChefHome extends StatefulWidget {
@@ -20,7 +23,12 @@ class _ChefHomeState extends State<ChefHome> {
         title: Text("Chef Home", style: AppWidget.boldTextFieldStyle(),),
         centerTitle: true,
         actions: [
-          Icon(Icons.logout_sharp, color: Colors.black, size: 30),
+          GestureDetector(
+            onTap: () {
+              DatabaseFunctions().logout();
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogIn()));
+            },
+            child: Icon(Icons.logout_sharp, color: Colors.black, size: 30)),
           SizedBox(width: 20),]
       ),
 
