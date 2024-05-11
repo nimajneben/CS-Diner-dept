@@ -46,6 +46,8 @@ Future<String> getUserRole(String uid) async {
       }
     });
 }
+
+
 Future<void> logout() async{
   try{
     await FirebaseAuth.instance.signOut();
@@ -76,4 +78,23 @@ Future<String> getChefName(String uid) async {
 
 
   }
+
+
+
+
+  Future<dynamic> getUserInfo(String uid) async {
+  return await FirebaseFirestore.instance.collection("users")
+    .doc(uid)
+    .get()
+    .then((value) {
+      var data = value.data();
+      if (data != null) {
+        return data;
+      } else {
+        // Handle the case where data is null
+        throw Exception('User data is null');
+      }
+    });
+}
+
 }

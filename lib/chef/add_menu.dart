@@ -47,7 +47,9 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
   
   Future getImage() async
   {
-    var image = await _picker.pickImage(source: ImageSource.gallery);
+    var image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 40,);
 
     selectedImage = File(image!.path);
     setState(() {
