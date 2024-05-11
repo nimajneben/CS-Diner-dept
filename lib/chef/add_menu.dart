@@ -63,6 +63,16 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
 
     String? chefId = user!.uid;
     String? chefName = await DatabaseFunctions().getChefName(chefId);
+    double? priceValue = double.tryParse(price.text.trim());
+if (priceValue == null) {
+  // Handle error, inform user to input correct format
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text("Please enter a valid price"),
+    backgroundColor: Colors.red,
+  ));
+  return; // Exit function if price is not valid
+}
+
 
     if(selectedImage != null && itemName != "" && price != "" && allergens != "" && description != "" && value != null)
     {
@@ -77,7 +87,7 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
 
     Map<String, dynamic> itemData = {
       "itemName": itemName.text.trim(),
-      "price": price.text.trim(),
+      "price": double.parse(price.text.trim()),
       "allergens": allergens.text.trim(),
       "description": description.text.trim(),
       "category": value,
@@ -208,6 +218,7 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
         
                   child: TextFormField(
                     controller: price,
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
                       
                       border: InputBorder.none,

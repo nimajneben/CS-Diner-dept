@@ -35,7 +35,7 @@ class _WalletState extends State<Wallet> {
           decoration: BoxDecoration(color: Colors.white), 
             child: 
             Row(children: [
-              Image.asset("images/wallet_02.jpg", width: 70, height: 70,),
+              Image.asset("images/wallet_02.jpg", cacheHeight: 70, cacheWidth: 70,),
               SizedBox(width: 20,),
         
               Column(
