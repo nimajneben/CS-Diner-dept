@@ -1,6 +1,8 @@
 
 
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
+import "package:manju_restaurant/methods/data.dart";
 import "package:manju_restaurant/pages/profile.dart";
 import "package:manju_restaurant/pages/wallet.dart";
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
@@ -25,10 +27,12 @@ class _BottomNavState extends State<BottomNav> {
   late Wallet wallet;
   late CustomerOrder customerOrder;
   late Profile profile;
-
+  
+ 
   @override
   void initState() {
     // TODO: implement initState
+  
     homepage =  Home();
     wallet =  Wallet();
     customerOrder =  CustomerOrder();
@@ -37,6 +41,8 @@ class _BottomNavState extends State<BottomNav> {
     pages = [homepage, customerOrder, wallet, profile];
     super.initState();
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
