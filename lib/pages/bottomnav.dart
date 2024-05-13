@@ -8,7 +8,7 @@ import "package:manju_restaurant/pages/wallet.dart";
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 
-import "customer_order.dart";
+import "cart_details.dart";
 import "home.dart";
 
 class BottomNav extends StatefulWidget {
@@ -25,7 +25,7 @@ class _BottomNavState extends State<BottomNav> {
   late Widget currentPage;
   late Home homepage;
   late Wallet wallet;
-  late CustomerOrder customerOrder;
+  late CartDetails cartDetails;
   late Profile profile;
   
  
@@ -35,10 +35,10 @@ class _BottomNavState extends State<BottomNav> {
   
     homepage =  Home();
     wallet =  Wallet();
-    customerOrder =  CustomerOrder();
+    cartDetails =  CartDetails();
     profile =  Profile();
 
-    pages = [homepage, customerOrder, wallet, profile];
+    pages = [homepage, cartDetails, wallet, profile];
     super.initState();
   }
 

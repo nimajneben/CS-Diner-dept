@@ -31,7 +31,7 @@ TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
 registration() async {
-  if (password != null){
+  if (password != ''){
     try{
       UserCredential userCredential = await FirebaseAuth.instance.
       createUserWithEmailAndPassword(
