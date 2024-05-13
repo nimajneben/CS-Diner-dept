@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/Manager/manager_home.dart';
-import 'package:manju_restaurant/Manager/manager_profile.dart';
+import 'package:manju_three/Manager/manager_home.dart';
+import 'package:manju_three/Manager/manager_profile.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class ManagerNav extends StatefulWidget {
