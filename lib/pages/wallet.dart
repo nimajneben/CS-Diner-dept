@@ -1,32 +1,22 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
-import 'dart:ffi';
-
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
-import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/widget/widget_support.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:manju_three/methods/wallet_state.dart';
+import 'package:provider/provider.dart';
+
+final String uid = FirebaseAuth.instance.currentUser!.uid;
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
 
   @override
   State<Wallet> createState() => _WalletState();
-}
-
-late int walletAmount = 0;
-
-String uid = FirebaseAuth.instance.currentUser!.uid;
-Future<int> getWalletAmount() async {
-  var snapshot = await DatabaseFunctions().getUserWallet(uid);
-  return snapshot;
 }
 
 class _WalletState extends State<Wallet> {
@@ -59,11 +49,7 @@ class _WalletState extends State<Wallet> {
                   "Your Wallet",
                   style: AppWidget.semiBoldTextFieldStyle(),
                 ),
-                Text("\$ $walletAmount",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                WalletBalanceView(),
               ]),
             ],
           ),
@@ -77,67 +63,7 @@ class _WalletState extends State<Wallet> {
         SizedBox(
           height: 10,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Color(0xFF008080),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                "\$" + "10",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Color(0xFF008080),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                "\$" + "20",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Color(0xFF008080),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                "\$" + "50",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Color(0xFF008080),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Text(
-                "\$" + "100",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            )
-          ],
-        ),
+        WalletManagementButtons(),
         SizedBox(
           height: 50,
         ),
@@ -160,5 +86,102 @@ class _WalletState extends State<Wallet> {
         ),
       ]),
     );
+  }
+}
+
+class WalletManagementButtons extends StatelessWidget {
+  const WalletManagementButtons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Color(0xFF008080),
+                borderRadius: BorderRadius.circular(15)),
+            child: Text(
+              "\$" + "10",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => {},
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Color(0xFF008080),
+                borderRadius: BorderRadius.circular(15)),
+            child: Text(
+              "\$" + "20",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Color(0xFF008080),
+                borderRadius: BorderRadius.circular(15)),
+            child: Text(
+              "\$" + "50",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Color(0xFF008080),
+                borderRadius: BorderRadius.circular(15)),
+            child: Text(
+              "\$" + "100",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class WalletBalanceView extends StatefulWidget {
+  const WalletBalanceView({super.key});
+  @override
+  State<StatefulWidget> createState() => _WalletBalanceView();
+}
+
+class _WalletBalanceView extends State<WalletBalanceView> {
+  SyncWalletModel wallet = SyncWalletModel(uid);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // throw UnimplementedError();
+    double balance = wallet.balance / 100.0;
+    // TODO: Format Currency Properly
+    return Text("uninmplemented");
   }
 }
