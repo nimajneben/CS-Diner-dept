@@ -19,7 +19,7 @@ class ApprovalPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Thank you for your submission!',
+              'Thank you for your registration!\nA staff member needs to activate your account.',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Padding(
@@ -48,7 +48,7 @@ class ApprovalPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30)),
                   child: Center(
                     child: Text(
-                      "MENU",
+                      "Return to Main Menu",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,

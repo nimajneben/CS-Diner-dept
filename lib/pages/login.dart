@@ -7,11 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:manju_three/admin/admin_nav.dart';
 import 'package:manju_three/chef/chef_bottomnav.dart';
 import 'package:manju_three/methods/data.dart';
-import 'package:manju_three/pages/approval_page.dart';
+import 'package:manju_three/pages/user_unapproved_page.dart';
 import 'package:manju_three/pages/bottomnav.dart';
 import 'package:manju_three/pages/signup.dart';
 import 'package:manju_three/pages/surfer_home.dart';
-import 'package:manju_three/screens/importer_menu.dart';
+import 'package:manju_three/Importer/importer_menu.dart';
 
 import '../widget/widget_support.dart';
 

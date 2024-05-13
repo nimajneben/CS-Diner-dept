@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
-import 'package:manju_three/pages/approval_page.dart';
+import 'package:manju_three/pages/user_unapproved_page.dart';
 import 'package:manju_three/pages/bottomnav.dart';
 
 import '../widget/widget_support.dart';

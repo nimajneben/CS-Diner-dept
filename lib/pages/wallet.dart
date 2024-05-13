@@ -9,13 +9,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
+import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/widget/widget_support.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
 
   @override
   State<Wallet> createState() => _WalletState();
+}
+
+late int walletAmount = 0;
+
+String uid = FirebaseAuth.instance.currentUser!.uid;
+Future<int> getWalletAmount() async {
+  var snapshot = await DatabaseFunctions().getUserWallet(uid);
+  return snapshot;
 }
 
 class _WalletState extends State<Wallet> {
@@ -48,7 +59,7 @@ class _WalletState extends State<Wallet> {
                   "Your Wallet",
                   style: AppWidget.semiBoldTextFieldStyle(),
                 ),
-                Text("\$" + "1000",
+                Text("\$ $walletAmount",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
