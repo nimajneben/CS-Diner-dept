@@ -1,15 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:manju_restaurant/admin/admin_nav.dart';
+import 'package:manju_restaurant/admin/suspended_user.dart';
+import 'package:manju_restaurant/admin/unapproved_users.dart';
 import 'package:manju_restaurant/chef/chef_bottomnav.dart';
 import 'package:manju_restaurant/firebase_options.dart';
 import 'package:manju_restaurant/pages/approval_page.dart';
 import 'package:manju_restaurant/pages/bottomnav.dart';
+
 import 'package:manju_restaurant/pages/food_details.dart';
 import 'package:manju_restaurant/pages/home.dart';
 import 'package:manju_restaurant/pages/login.dart';
 import 'package:manju_restaurant/pages/signup.dart';
 import 'package:manju_restaurant/pages/surfer_home.dart';
 import 'package:manju_restaurant/pages/user_info.dart';
+import 'package:manju_restaurant/pages/wallet.dart';
+import 'package:manju_restaurant/review/add_ratings.dart';
+import 'package:manju_restaurant/review/user_ratings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +53,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: SignUp(),
+      home: LogIn(),
     );
   }
 }

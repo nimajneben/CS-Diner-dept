@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
+import 'package:manju_restaurant/review/add_ratings.dart';
+import 'package:manju_restaurant/review/user_ratings.dart';
 
 import '../widget/widget_support.dart';
 
 class FoodDetails extends StatefulWidget {
-  String itemName, imageUrl, description, chef, allergens, chefId;
+  String itemId, itemName, imageUrl, description, chef, allergens, chefId;
   double price, rating;
    FoodDetails({super.key,
+    required this.itemId,
     required this.itemName,
     required this.imageUrl,
     required this.description,
@@ -127,7 +130,17 @@ class _FoodDetailsState extends State<FoodDetails> {
                     
                     Row(children: [Icon(Icons.star, color: Colors.yellow[900],),
                     SizedBox(width: 5,),
-                    Text(widget.rating.toString(), style: AppWidget.semiBoldTextFieldStyle()),],),
+                    GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserRatings())),
+                      child: Text(widget.rating.toString(), style: AppWidget.semiBoldTextFieldStyle())),
+                    SizedBox(width: 30,),
+                    GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddRatings(itemId: widget.itemId,
+                                                           itemName: widget.itemName,
+                                                            chefName: widget.chef,
+                                                               chefId: widget.chefId,
+                                                                rating: widget.rating))),
+                      child: Text("Write a review", style:AppWidget.semiBoldTextFieldStyle()))],),
                   
 
               ],),

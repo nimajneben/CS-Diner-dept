@@ -71,7 +71,8 @@ class _HomeState extends State<Home> {
             return GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                      FoodDetails( itemName: ds['itemName'], // Assuming 'itemName' is the field name in your document
+                      FoodDetails( itemId: ds.id,
+                                    itemName: ds['itemName'], // Assuming 'itemName' is the field name in your document
                                    imageUrl: ds['imageUrl'],
                                   description: ds['description'],
                                   chef: ds['chef'],
@@ -152,7 +153,8 @@ class _HomeState extends State<Home> {
             return GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                     FoodDetails( itemName: ds['itemName'], // Assuming 'itemName' is the field name in your document
+                     FoodDetails( itemId: ds.id,
+                                   itemName: ds['itemName'], // Assuming 'itemName' is the field name in your document
                                    imageUrl: ds['imageUrl'],
                                   description: ds['description'],
                                   chef: ds['chef'],

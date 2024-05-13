@@ -151,28 +151,5 @@ Future<String> getChefName(String uid) async {
 
 
 
-Future<void> addMoneyToUserWallet(String uid, double amountToAdd) async {
-  var userRef = FirebaseFirestore.instance.collection("users").doc(uid);
-  var transactionResponse = await FirebaseFirestore.instance.runTransaction((transaction) async {
-    var userSnapshot = await transaction.get(userRef);
-    if (!userSnapshot.exists) {
-      throw Exception('User does not exist');
-    }
-
-
-    var userData = userSnapshot.data();
-    if (userData != null && userData['deposit'] != null) {
-      double currentWallet = userData['deposit'] as double;
-      double updatedWallet = currentWallet + amountToAdd;
-      transaction.update(userRef, {'wallet': updatedWallet});
-    } else {
-      throw Exception('Wallet data is missing or null');
-    }
-  }).catchError((error) {
-    throw Exception('Failed to update wallet: $error');
-  });
-
-  return transactionResponse;
-}
 
 }
