@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"dart-code.flutter",
+			"dart-code.dart-code"
+		]
+	}
+}
