@@ -22,7 +22,6 @@ class _ChefNavState extends State<ChefNav> {
   // late EditMenu editMenu;
   late AddMenuItem addMenu;
   // late EditMenu editMenu;
-  late AddMenuItem addMenu;
   late ChefProfile chefProfile;
 
   @override
