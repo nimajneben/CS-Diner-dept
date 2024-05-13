@@ -5,6 +5,9 @@ import 'package:manju_restaurant/chef/add_menu.dart';
 import 'package:manju_restaurant/chef/chef_home.dart';
 import 'package:manju_restaurant/chef/chef_profile.dart';
 import 'package:manju_restaurant/chef/edit_menu.dart';
+import 'package:manju_restaurant/chef/edit_item.dart';
+import 'package:manju_restaurant/chef/chef_orders.dart';
+import 'package:manju_restaurant/chef/chef_ingredients.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class ChefNav extends StatefulWidget {
@@ -20,19 +23,26 @@ class _ChefNavState extends State<ChefNav> {
   late List<Widget> pages;
   late Widget currentPage;
   late ChefHome chefHome;
-  // late EditMenu editMenu;
+  // 
   late AddMenuItem addMenu;
+  late EditMenu editMenu;
+  late EditMenuItemPage editItem;
+  late OrdersPage chefOrders;
+  late ChefIngredientsPage chefIngredients;
+
   late ChefProfile chefProfile;
 
   @override
   void initState() {
     // TODO: implement initState
     chefHome =  ChefHome();
-    // editMenu =  EditMenu();
+    editMenu =  EditMenu();
     addMenu =  AddMenuItem();
     chefProfile =  ChefProfile();
+    chefOrders = OrdersPage();
+    chefIngredients = ChefIngredientsPage();
 
-    pages = [chefHome, addMenu, chefProfile];
+    pages = [chefHome, addMenu, editMenu, chefOrders, chefIngredients, chefProfile];
     super.initState();
   }
   @override
@@ -50,6 +60,9 @@ class _ChefNavState extends State<ChefNav> {
         items: [
           Icon(Icons.home_outlined, color: Colors.white,),
           Icon(Icons.add_circle_outline, color: Colors.white,),
+          Icon(Icons.edit, color: Colors.white,),
+          Icon(Icons.format_list_bulleted, color: Colors.white,),
+          Icon(Icons.kitchen, color: Colors.white,),
           Icon(Icons.person_outline, color: Colors.white,),
         ],
       ),
