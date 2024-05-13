@@ -10,6 +10,8 @@ import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/pages/approval_page.dart';
 import 'package:manju_three/pages/bottomnav.dart';
 import 'package:manju_three/pages/signup.dart';
+import 'package:manju_three/pages/surfer_home.dart';
+import 'package:manju_three/screens/importer_menu.dart';
 
 import '../widget/widget_support.dart';
 
@@ -48,6 +50,11 @@ class _LogInState extends State<LogIn> {
               context,
               MaterialPageRoute(builder: (context) => AdminNav()),
               (route) => false);
+        } else if (value == "importer") {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: ((context) => ImporterMainScreen())),
+              (route) => false);
         } else {
           if (isApproved == false) {
             Navigator.pushReplacement(context,
@@ -55,7 +62,7 @@ class _LogInState extends State<LogIn> {
           } else {
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => BottomNav()),
+                MaterialPageRoute(builder: (context) => SurferHome()),
                 (route) => false);
           }
         }
