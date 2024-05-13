@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './screens/importer_menu.dart';
+import 'package:manju_three/screens/importer_menu.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

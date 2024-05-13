@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/admin/customer_page.dart';
-import 'package:manju_restaurant/admin/unapproved_users.dart';
-import 'package:manju_restaurant/chef/add_menu.dart';
-import 'package:manju_restaurant/chef/chef_home.dart';
-import 'package:manju_restaurant/chef/chef_profile.dart';
-import 'package:manju_restaurant/chef/edit_menu.dart';
+import 'package:manju_three/admin/customer_page.dart';
+import 'package:manju_three/admin/unapproved_users.dart';
+import 'package:manju_three/chef/add_menu.dart';
+import 'package:manju_three/chef/chef_home.dart';
+import 'package:manju_three/chef/chef_profile.dart';
+import 'package:manju_three/chef/edit_menu.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class AdminNav extends StatefulWidget {
@@ -17,7 +17,6 @@ class AdminNav extends StatefulWidget {
 }
 
 class _AdminNavState extends State<AdminNav> {
-
   int currentTabIndex = 0;
   late List<Widget> pages;
   late Widget currentPage;
@@ -29,14 +28,15 @@ class _AdminNavState extends State<AdminNav> {
   @override
   void initState() {
     // TODO: implement initState
-    customerPage =  CustomerPage();
+    customerPage = CustomerPage();
     // editMenu =  EditMenu();
-    addMenu =  AddMenuItem();
-    chefProfile =  ChefProfile();
+    addMenu = AddMenuItem();
+    chefProfile = ChefProfile();
 
     pages = [customerPage, addMenu, chefProfile];
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +45,26 @@ class _AdminNavState extends State<AdminNav> {
         backgroundColor: Colors.white,
         color: Colors.deepPurple,
         animationDuration: Duration(milliseconds: 200),
-        onTap: (int index){
+        onTap: (int index) {
           setState(() {
-            currentTabIndex = index;});
+            currentTabIndex = index;
+          });
         },
         items: [
-          Icon(Icons.dashboard, color: Colors.white,),
-          Icon(Icons.add_circle_outline, color: Colors.white,),
-          Icon(Icons.person_outline, color: Colors.white,),
+          Icon(
+            Icons.dashboard,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.add_circle_outline,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.person_outline,
+            color: Colors.white,
+          ),
         ],
       ),
-
       body: pages[currentTabIndex],
     );
   }
