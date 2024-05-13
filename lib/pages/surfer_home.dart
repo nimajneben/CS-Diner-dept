@@ -249,46 +249,31 @@ class _SurferHomeState extends State<SurferHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('MANJU'),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.login),
+              tooltip: 'Login',
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LogIn()));
+              })
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
             margin: const EdgeInsets.only(top: 30.0, left: 20.0, bottom: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Hello Stranger!",
-                      style: AppWidget.boldTextFieldStyle(),
-                    ),
-
-                    ///Here is the Shopping Cart Icon
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LogIn()));
-                      },
-                      child: Container(
-                        margin:
-                            const EdgeInsets.only(right: 20.0, bottom: 20.0),
-                        padding: const EdgeInsets.all(3.0),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: const Icon(Icons.login_outlined,
-                            size: 30.0, color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
                 SizedBox(height: 20.0),
                 Text(
-                  "MANJU",
+                  "Hi, stranger!",
                   style: AppWidget.headLineTextFieldStyle(),
                 ),
                 Text(
-                  "Delicious food for you to enjoy",
+                  "Delicious food for you to enjoy.\nMake an account today!",
                   style: AppWidget.lightTextFieldStyle(),
                 ),
                 SizedBox(height: 20.0),

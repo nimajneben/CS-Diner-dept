@@ -40,18 +40,24 @@ class _LogInState extends State<LogIn> {
           .getApprovalInfo(FirebaseAuth.instance.currentUser!.uid);
       role.then((value) {
         if (value == "chef") {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChefNav()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => ChefNav()),
+              (route) => false);
         } else if (value == "admin") {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AdminNav()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => AdminNav()),
+              (route) => false);
         } else {
           if (isApproved == false) {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => ApprovalPage()));
           } else {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => BottomNav()));
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => BottomNav()),
+                (route) => false);
           }
         }
       });

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:manju_three/pages/bottomnav.dart';
+import 'package:manju_three/pages/surfer_home.dart';
 import 'package:manju_three/screens/importer_menu.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:manju_three/pages/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: const SurferHome(),
     );
   }
 }
