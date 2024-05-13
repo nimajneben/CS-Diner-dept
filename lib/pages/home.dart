@@ -26,6 +26,8 @@ class _HomeState extends State<Home> {
 
   Stream? foodStream;
 
+  
+
   ontheload() async{
     foodStream = await DatabaseFunctions().getMenuItems("Drinks");
     foodStream!.listen(
