@@ -45,9 +45,12 @@ class _EditMenuState extends State<EditMenu> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.redAccent,
-        title: const Text("Edit Menu",
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Edit Menu", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           IconButton(

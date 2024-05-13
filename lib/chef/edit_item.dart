@@ -79,7 +79,13 @@ class _EditMenuItemPageState extends State<EditMenuItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Menu Item'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.redAccent,
+        title: const Text("Edit Menu Item", style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.logout_sharp, color: Colors.black, size: 30),

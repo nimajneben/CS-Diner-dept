@@ -92,6 +92,10 @@ class ChefIngredientsPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             backgroundColor: Colors.redAccent,
             title: Text("Ingredients Inventory", style: TextStyle(fontWeight: FontWeight.bold)),
             centerTitle: true,

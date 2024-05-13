@@ -116,12 +116,29 @@ class _AddMenuItemState extends State<AddMenuItem> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           backgroundColor: Colors.redAccent,
           title: Text(
             "Add Menu Item",
             style: AppWidget.boldTextFieldStyle(),
           ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout_sharp, color: Colors.black, size: 30),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogIn()),
+                );
+              },
+            ),
+            SizedBox(width: 20),
+          ],
         ),
         body: SingleChildScrollView(
           child: Container(

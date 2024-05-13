@@ -15,13 +15,21 @@ class _ChefProfileState extends State<ChefProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           backgroundColor: Colors.redAccent,
           title: Text("Profile", style: AppWidget.boldTextFieldStyle()),
           centerTitle: true,
           actions: [
-            Icon(Icons.logout_sharp, color: Colors.black, size: 30),
+            IconButton(
+              icon: Icon(Icons.logout_sharp, color: Colors.black, size: 30),
+              onPressed: () => _logout(context),
+            ),
             SizedBox(width: 20),
-          ]),
+          ],
+        ),
       body: Center(
         child: Column(
           children: [
