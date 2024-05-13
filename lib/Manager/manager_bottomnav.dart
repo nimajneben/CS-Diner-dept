@@ -41,9 +41,9 @@ class _ManagerNavState extends State<ManagerNav> {
           });
         },
         items: [
-          Icon(Icons.dashboard, color: Colors.white,), // Icon for the ManagerHome page
-          Icon(Icons.person, color: Colors.white,), // Icon for the ManagerProfile page
-          // Add more icons here when other pages are ready
+          Icon(Icons.dashboard, color: Colors.white,),
+          Icon(Icons.person, color: Colors.white,),
+
         ],
       ),
       body: currentPage,
