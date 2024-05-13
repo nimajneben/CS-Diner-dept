@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/admin/suspended_user.dart';
-import 'package:manju_restaurant/admin/unapproved_users.dart';
-import 'package:manju_restaurant/chef/add_menu.dart';
-import 'package:manju_restaurant/methods/data.dart';
-import 'package:manju_restaurant/pages/login.dart';
-import 'package:manju_restaurant/widget/widget_support.dart';
+import 'package:manju_three/admin/suspended_user.dart';
+import 'package:manju_three/admin/unapproved_users.dart';
+import 'package:manju_three/chef/add_menu.dart';
+import 'package:manju_three/methods/data.dart';
+import 'package:manju_three/pages/login.dart';
+import 'package:manju_three/widget/widget_support.dart';
 
 class CustomerPage extends StatefulWidget {
   const CustomerPage({super.key});
@@ -22,41 +22,35 @@ class _CustomerPageState extends State<CustomerPage> {
       appBar: AppBar(
         leading: Icon(Icons.menu),
         backgroundColor: Colors.deepPurple,
-        title: Text(
-          "Customers", 
-          style: TextStyle(
-            color: Colors.white, 
-            fontWeight: FontWeight.bold,
-            fontSize: 24
-          )
-        ),
+        title: Text("Customers",
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24)),
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: () {
-              DatabaseFunctions().logout();
-              Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (context) => LogIn())
-              );
-            },
-            child: Icon(
-              Icons.logout_sharp, 
-              color: Colors.white, 
-              size: 30,
-            )
-          ),
+              onTap: () {
+                DatabaseFunctions().logout();
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+              child: Icon(
+                Icons.logout_sharp,
+                color: Colors.white,
+                size: 30,
+              )),
           SizedBox(width: 20),
         ],
       ),
       body: Column(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => UnapprovedUsersPage())
-              );
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UnapprovedUsersPage()));
             },
             child: Material(
               elevation: 5.0,
@@ -72,30 +66,28 @@ class _CustomerPageState extends State<CustomerPage> {
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Icon(
-                        Icons.add_circle_outline, 
-                        color: Colors.white, 
+                        Icons.add_circle_outline,
+                        color: Colors.white,
                         size: 50,
                       ),
                     ),
                     SizedBox(width: 20),
                     Text(
-                      "Unapproved Users", 
+                      "Unapproved Users",
                       style: TextStyle(
-                        fontSize: 20, 
-                        color: Colors.white, 
-                        fontWeight: FontWeight.bold
-                      ),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
             ),
-          ),GestureDetector(
-            onTap: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => SuspendedUser())
-              );
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuspendedUser()));
             },
             child: Material(
               elevation: 5.0,
@@ -111,19 +103,18 @@ class _CustomerPageState extends State<CustomerPage> {
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Icon(
-                        Icons.cancel_presentation_outlined, 
-                        color: Colors.white, 
+                        Icons.cancel_presentation_outlined,
+                        color: Colors.white,
                         size: 50,
                       ),
                     ),
                     SizedBox(width: 20),
                     Text(
-                      "Suspended Users", 
+                      "Suspended Users",
                       style: TextStyle(
-                        fontSize: 20, 
-                        color: Colors.white, 
-                        fontWeight: FontWeight.bold
-                      ),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
