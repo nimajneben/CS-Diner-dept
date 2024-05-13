@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
+import 'package:manju_restaurant/pages/approval_page.dart';
 import 'package:manju_restaurant/pages/bottomnav.dart';
 
 import '../widget/widget_support.dart';
@@ -48,7 +49,7 @@ registration() async {
       ));
 
       //using pushReplacement to remove the back button, the user can't go back to the signup page
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNav()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ApprovalPage()));
     } on FirebaseException catch (e){
       if (e.code == 'weak-password'){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -74,21 +75,21 @@ Future addDetails(String uId, String name, String email) async{
       {
         'name': name,
         'email': email,
-        'role': 'chef',
-        'salary': 70000.0,
-        'warnings': 1,
-        'ratings' : 4.9,
-        'compliments': 1,
-        'complaints': 1,
-        'yearsOfExperience': 6,
-        
-        // 'isApproved':false,
-        // 'isSuspended':false,
-        // 'warning': 0,
-        // 'deposit': 50.0,
-        // 'totalOrders': 0,
-        // 'totalSpent': 0.0,
-        // 'isVip': false,
+        // 'role': 'chef',
+        // 'salary': 70000.0,
+        // 'warnings': 1,
+        // 'ratings' : 4.9,
+        // 'compliments': 1,
+        // 'complaints': 1,
+        // 'yearsOfExperience': 6,
+        'role': 'customer',
+        'isApproved':false,
+        'isSuspended':false,
+        'warning': 0,
+        'deposit': 50.0,
+        'totalOrders': 0,
+        'totalSpent': 0.0,
+        'isVip': false,
 
 
       }

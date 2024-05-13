@@ -27,6 +27,24 @@ class _SurferHomeState extends State<SurferHome> {
 
   Stream? foodStream;
 
+  void _searchItem(String query) {
+  if (query.isNotEmpty) {
+    Stream<QuerySnapshot> newStream = FirebaseFirestore.instance
+      .collection('Menu')
+      .where('itemName', isGreaterThanOrEqualTo: query)
+      .where('itemName', isLessThanOrEqualTo: query + '\uf8ff')
+      .snapshots();
+
+    setState(() {
+      foodStream = newStream;
+    });
+  } else {
+    // Reset to default stream if search query is cleared
+    ontheload();  // This resets to your default stream
+  }
+}
+
+
   ontheload() async{
     foodStream = await DatabaseFunctions().getMenuItems("Drinks");
     foodStream!.listen(
@@ -219,6 +237,7 @@ class _SurferHomeState extends State<SurferHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       
       body: SingleChildScrollView(
         child: Container(
             margin: const EdgeInsets.only(top:30.0, left:20.0, bottom: 50),
@@ -261,6 +280,8 @@ class _SurferHomeState extends State<SurferHome> {
              margin: EdgeInsets.only(right: 20.0),
                child: showItems()),
             SizedBox(height: 20.0),
+
+            
             
             Container(
             
