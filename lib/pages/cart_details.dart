@@ -1,8 +1,9 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/pages/customer_order.dart';
 import '../widget/widget_support.dart';
 import 'checkout_page.dart';
+import 'customer_order.dart';
 import "food_details.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +20,8 @@ bool isVip = false;  // State variable to hold VIP status
 class _CartDetailsState extends State<CartDetails> {
   int aNumber = 1;
   double subtotal = 0.0;  // Subtotal of the cart items
+  double oldSubtotal = 0.0;
+  double totalSaved = 0.0;
   @override
   void initState() {
     super.initState();
@@ -28,7 +31,7 @@ class _CartDetailsState extends State<CartDetails> {
       });
     }).catchError((error) {
       // Handle errors, e.g., by showing a snackbar or logging an error
-      print("Error fetching VIP status: $error");
+      print("Error fetching VIP status:$error");
     });
   }
   Future<bool> fetchVipStatus() async {
@@ -43,18 +46,18 @@ class _CartDetailsState extends State<CartDetails> {
   Future<void> _updateCartAmount(int newAmount,String itemName) async {
     String cartId = itemName ;  // You need to define how you get this ID
     if (newAmount > 0){
-    try {
-    await FirebaseFirestore.instance
-        .doc('users/$userId/Cart/$cartId')
-        .update({'quantity': newAmount});
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error updating cart amount: $e'),
-          backgroundColor: Colors.red));
-      // Optionally handle errors, e.g., by showing a snackbar
+      try {
+        await FirebaseFirestore.instance
+            .doc('users/$userId/Cart/$cartId')
+            .update({'quantity': newAmount});
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Error updating cart amount: $e'),
+            backgroundColor: Colors.red));
+        // Optionally handle errors, e.g., by showing a snackbar
+      }
     }
-  }
     else{
       try {
         await FirebaseFirestore.instance
@@ -73,30 +76,35 @@ class _CartDetailsState extends State<CartDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: SafeArea(  // Ensures nothing goes under system status or navigation bars
-        child: SingleChildScrollView(  // Allows vertical scrolling
+      body: SafeArea( // Ensures nothing goes under system status or navigation bars
+        child: SingleChildScrollView( // Allows vertical scrolling
           physics: const ClampingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20.0),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),  // Added padding to match the original design
+                padding: const EdgeInsets.only(left: 20.0),
+                // Added padding to match the original design
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Manju",
-                      style: AppWidget.headLineTextFieldStyle().copyWith(fontSize: 45),
+                      style: AppWidget.headLineTextFieldStyle().copyWith(
+                          fontSize: 45),
                     ),
                     Container(
                       padding: const EdgeInsets.only(right: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerOrder()));  // Assumes OrdersPage exists
+                          Navigator.push(context, MaterialPageRoute(builder: (
+                              context) => const CustomerOrder())); // Assumes OrdersPage exists
                         },
                         style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blue,
+                            // Text color
                             elevation: 5
 
                         ),
@@ -106,8 +114,9 @@ class _CartDetailsState extends State<CartDetails> {
                   ],
                 ),
               ),
-              StreamBuilder<QuerySnapshot> (
-                stream: FirebaseFirestore.instance.collection('users').doc(userId).collection('Cart').snapshots(),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('users').doc(
+                    userId).collection('Cart').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
@@ -117,22 +126,34 @@ class _CartDetailsState extends State<CartDetails> {
                   }
 
                   double newSubtotal = 0.0; // Temporary variable to calculate subtotal
-                  List<Widget> itemList = snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                  double calculatedSubtotal = 0.0;
+                  double savings = 0.0;
+                  List<Widget> itemList = snapshot.data!.docs.map((
+                      DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data() as Map<
+                        String,
+                        dynamic>;
                     double price = double.parse(data['price'].toString());
                     int quantity = data['quantity'];
-                    newSubtotal += price * quantity;  // Add to the subtotal for each item
-                    return buildCard(data['itemName'], data['imageUrl'], "\$${price.toStringAsFixed(2)}", quantity,data);
+                    newSubtotal +=
+                        price * quantity; // Add to the subtotal for each item
+                    return buildCard(
+                        data['itemName'], data['imageUrl'], "\$${price
+                        .toStringAsFixed(2)}", quantity, data);
                   }).toList();
                   // Apply VIP discount if user is a VIP
                   if (isVip) {
-                    newSubtotal *= 0.9;  // Apply 10% discount
+                    savings = newSubtotal * 0.1;
+                    calculatedSubtotal = newSubtotal;
+                    newSubtotal *= 0.9; // Apply 10% discount
                   }
 
                   // Update the state of subtotal after building the list
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     if (newSubtotal != subtotal) {
                       setState(() {
+                        totalSaved = savings;
+                        oldSubtotal = calculatedSubtotal;
                         subtotal = newSubtotal;
                       });
                     }
@@ -142,15 +163,47 @@ class _CartDetailsState extends State<CartDetails> {
                 },
 
               ),
-              const SizedBox(height: 50.0),  // Extra space at the bottom
+              const SizedBox(height: 30.0), // Extra space at the bottom
               // Subtotal Row
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Subtotal", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    Text("\$${subtotal.toStringAsFixed(2)}", style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text("Subtotal", style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
+                    RichText(
+                      text: TextSpan(
+                        style: DefaultTextStyle
+                            .of(context)
+                            .style,
+                        children: <TextSpan>[
+                          // Old subtotal, struck-through
+                          TextSpan(
+                            text: "\$${oldSubtotal.toStringAsFixed(2)}",
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                          // Space between old and new subtotal
+                          const TextSpan(
+                            text: " ",
+                          ),
+                          // New subtotal in green
+                          TextSpan(
+                            text: "\$${subtotal.toStringAsFixed(2)}",
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -160,17 +213,59 @@ class _CartDetailsState extends State<CartDetails> {
 
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20),  // Adjust the position slightly above the bottom navigation bar
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  CheckoutPage(subtotal: subtotal )));
-          },
-          icon: const Icon(Icons.shopping_cart),
-          label: const Text('Go to checkout', style: TextStyle(fontSize: 16)),  // Adjust font size as necessary
-          backgroundColor: Colors.blue,
-        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // Center the button
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (totalSaved > 0) // Assuming you have a variable for this
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              color: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                'Total saved as VIP: \$${totalSaved
+                    .toStringAsFixed(2)}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => CheckoutPage(subtotal: subtotal)));
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text and icon color
+                minimumSize: Size(MediaQuery
+                    .of(context)
+                    .size
+                    .width, 50), // Button height
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      0), // Flat rectangular button
+                ),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.shopping_cart),
+                  SizedBox(width: 10),
+                  Text('Go to checkout', style: TextStyle(fontSize: 16)),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -200,8 +295,8 @@ class _CartDetailsState extends State<CartDetails> {
               children: [
                 CachedNetworkImage(
                   imageUrl: imagePath,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                   height: 150,
                   width: 150,
                   fit: BoxFit.cover,

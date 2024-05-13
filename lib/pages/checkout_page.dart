@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart%20';
-import 'package:manju_restaurant/widget/widget_support.dart';
+
+import '../widget/widget_support.dart';
 
 class CheckoutPage extends StatefulWidget {
   final double subtotal;  // Accept subtotal as a parameter
@@ -54,7 +56,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         // Now, this catch should properly handle exceptions thrown within the transaction
         if (!mounted) return;
         throw Exception('Failed to update user data: $e');
-        }
+      }
     } else {
       // Handle case where user is null
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('User not logged in'), backgroundColor: Colors.red));
@@ -154,7 +156,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         bottomNavigationBar: Container(
           height: 60, // Adjust the height as necessary
           width: double.infinity,
-          padding: EdgeInsets.all(8), // Padding around the button
+          padding: const EdgeInsets.all(8), // Padding around the button
           child: ElevatedButton(
             onPressed: ()async {
               if (finalTotal > 0) {
@@ -175,9 +177,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white, backgroundColor: Colors.blue, shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0), // Make the button corners squared
-              ), // Text color
-              textStyle: TextStyle(
+              borderRadius: BorderRadius.circular(0), // Make the button corners squared
+            ), // Text color
+              textStyle: const TextStyle(
                 fontSize: 16,
               ),
               elevation: 0, // Removes shadow for a flatter appearance
