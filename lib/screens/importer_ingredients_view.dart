@@ -101,7 +101,7 @@ Widget ingredientBottomSheet(BuildContext context, bool edit_mode,
   restock ??= false;
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
     return Container(
-      height: 200,
+      height: 210,
       color: Colors.transparent,
       padding: EdgeInsets.all(16.0),
       child: Center(
