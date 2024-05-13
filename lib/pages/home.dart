@@ -2,8 +2,6 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:flutter/material.dart%20";
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
 import "package:manju_three/methods/data.dart";
 
 import "../widget/widget_support.dart";
@@ -229,39 +227,25 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('MANJU'),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
             margin: const EdgeInsets.only(top: 30.0, left: 20.0, bottom: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Hello John Doe",
-                      style: AppWidget.boldTextFieldStyle(),
-                    ),
-
-                    ///Here is the Shopping Cart Icon
-                    Container(
-                      margin: const EdgeInsets.only(right: 20.0, bottom: 20.0),
-                      padding: const EdgeInsets.all(3.0),
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: const Icon(Icons.shopping_cart_checkout,
-                          size: 30.0, color: Colors.white),
-                    )
-                  ],
-                ),
                 SizedBox(height: 20.0),
                 Text(
-                  "MANJU",
+                  "Hello, [username]",
                   style: AppWidget.headLineTextFieldStyle(),
                 ),
                 Text(
-                  "Delicious food for you to enjoy",
+                  "Delicious food for you to enjoy today!",
                   style: AppWidget.lightTextFieldStyle(),
                 ),
                 SizedBox(height: 20.0),

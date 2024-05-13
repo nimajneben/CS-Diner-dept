@@ -42,14 +42,6 @@ class _FoodDetailsState extends State<FoodDetails> {
       body: Container(
         margin: EdgeInsets.only(top: 30, left: 10, right: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Column(children: [
-                Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black)
-              ])),
-
           CachedNetworkImage(
             imageUrl: widget.imageUrl,
             width: MediaQuery.of(context).size.width,
