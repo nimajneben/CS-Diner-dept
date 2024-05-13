@@ -19,8 +19,13 @@ class _ChefNavState extends State<ChefNav> {
   late List<Widget> pages;
   late Widget currentPage;
   late ChefHome chefHome;
-  // late EditMenu editMenu;
+  //
   late AddMenuItem addMenu;
+  late EditMenu editMenu;
+  late EditMenuItemPage editItem;
+  late OrdersPage chefOrders;
+  late ChefIngredientsPage chefIngredients;
+
   late ChefProfile chefProfile;
 
   @override
@@ -30,8 +35,21 @@ class _ChefNavState extends State<ChefNav> {
     // editMenu =  EditMenu();
     addMenu = AddMenuItem();
     chefProfile = ChefProfile();
+    chefHome = ChefHome();
+    editMenu = EditMenu();
+    addMenu = AddMenuItem();
+    chefProfile = ChefProfile();
+    chefOrders = OrdersPage();
+    chefIngredients = ChefIngredientsPage();
 
-    pages = [chefHome, addMenu, chefProfile];
+    pages = [
+      chefHome,
+      addMenu,
+      editMenu,
+      chefOrders,
+      chefIngredients,
+      chefProfile
+    ];
     super.initState();
   }
 
@@ -55,6 +73,18 @@ class _ChefNavState extends State<ChefNav> {
           ),
           Icon(
             Icons.add_circle_outline,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.edit,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.format_list_bulleted,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.kitchen,
             color: Colors.white,
           ),
           Icon(
