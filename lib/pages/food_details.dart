@@ -38,19 +38,9 @@ class _FoodDetailsState extends State<FoodDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Food Detail')),
       body: Container(
-        margin:  EdgeInsets.only(top: 30, left: 10, right: 20),
-        child:
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [GestureDetector(
-              onTap: (){
-                Navigator.pop(context);
-              },
-              child: Column(children: [Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black)])),
-
-              CachedNetworkImage(imageUrl: widget.imageUrl,
+        margin: EdgeInsets.only(top: 30, left: 10, right: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           CachedNetworkImage(
             imageUrl: widget.imageUrl,
