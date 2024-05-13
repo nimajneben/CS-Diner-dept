@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/admin/suspended_user.dart';
-import 'package:manju_restaurant/admin/unapproved_users.dart';
-import 'package:manju_restaurant/chef/add_menu.dart';
-import 'package:manju_restaurant/methods/data.dart';
-import 'package:manju_restaurant/pages/login.dart';
-import 'package:manju_restaurant/widget/widget_support.dart';
+import 'package:manju_three/admin/suspended_user.dart';
+import 'package:manju_three/admin/unapproved_users.dart';
+import 'package:manju_three/chef/add_menu.dart';
+import 'package:manju_three/methods/data.dart';
+import 'package:manju_three/pages/login.dart';
+import 'package:manju_three/widget/widget_support.dart';
 
 class CustomerPage extends StatefulWidget {
   const CustomerPage({super.key});

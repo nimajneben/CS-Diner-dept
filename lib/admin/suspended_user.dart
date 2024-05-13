@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/widget/widget_support.dart';
+import 'package:manju_three/widget/widget_support.dart';
 
 class SuspendedUser extends StatefulWidget {
   const SuspendedUser({super.key});
