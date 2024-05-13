@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'receipt.dart'; // Import the Receipt widget
+import 'receipt.dart';
 
 class ManagerComplaints extends StatefulWidget {
   const ManagerComplaints({super.key});
@@ -12,16 +12,14 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
   DateTime _selectedDate = DateTime.now();
   String _selectedStatus = 'Customer';
   String _selectedAddress = 'Customer';
-  String _selectedAddress2 = 'Customer'; // New dropdown
+  String _selectedAddress2 = 'Customer';
 
-  // Create TextEditingController objects
   final _nameController = TextEditingController();
   final _locationController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose of the TextEditingController objects
     _nameController.dispose();
     _locationController.dispose();
     _descriptionController.dispose();
@@ -33,7 +31,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
       context: context,
       initialDate: _selectedDate,
       firstDate: DateTime(2021),
-      lastDate: DateTime.now(), // Set the lastDate to current date
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != _selectedDate)
       setState(() {
@@ -51,7 +49,6 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
         appBar: appBar(),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          // Wrap your Column with SingleChildScrollView
           child: Column(
             children: [
               Container(
@@ -76,10 +73,9 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                   ),
                 ),
               ),
-              SizedBox(height: 30), // Increase the height here
+              SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.only(
-                    left: 20, right: 20), // Adjust the margin here
+                margin: EdgeInsets.only(left: 20, right: 20),
                 child: GestureDetector(
                   onTap: () {
                     _selectDate(context);
@@ -102,10 +98,9 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                   ),
                 ),
               ),
-              SizedBox(height: 30), // Add space
+              SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.only(
-                    left: 20, right: 20), // Adjust the margin here
+                margin: EdgeInsets.only(left: 20, right: 20),
                 child: DropdownButtonFormField<String>(
                   value: _selectedAddress2,
                   decoration: InputDecoration(
@@ -165,10 +160,9 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                   ),
                 ),
               ),
-              SizedBox(height: 30), // Add space
+              SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.only(
-                    left: 20, right: 20), // Adjust the margin here
+                margin: EdgeInsets.only(left: 20, right: 20),
                 child: DropdownButtonFormField<String>(
                   value: _selectedAddress,
                   decoration: InputDecoration(
@@ -200,10 +194,9 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 30), // Add space
+              SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.only(
-                    left: 20, right: 20), // Adjust the margin here
+                margin: EdgeInsets.only(left: 20, right: 20),
                 decoration: BoxDecoration(boxShadow: [
                   BoxShadow(
                       color: Color(0xff1D1617).withOpacity(0.11),
@@ -212,7 +205,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                 ]),
                 child: TextFormField(
                   controller: _descriptionController,
-                  maxLines: 10, // Increase maxLines for larger input field
+                  maxLines: 10,
                   decoration: InputDecoration(
                     labelText: 'Please describe the incident in detail',
                     filled: true,
@@ -225,14 +218,11 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                   ),
                 ),
               ),
-              SizedBox(height: 30), // Add space
+              SizedBox(height: 30),
               Container(
-                height: 60, // Increase the height of the button
-                margin: EdgeInsets.only(
-                    top: 5,
-                    left: 20,
-                    right: 20,
-                    bottom: 10), // Adjust the margin here
+                height: 60,
+                margin:
+                    EdgeInsets.only(top: 5, left: 20, right: 20, bottom: 10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_nameController.text.isEmpty ||
@@ -251,16 +241,13 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                                   date: _selectedDate,
                                   location: _locationController.text,
                                   address: _selectedAddress,
-                                  address2: _selectedAddress2, // New field
+                                  address2: _selectedAddress2,
                                   description: _descriptionController.text,
                                 )),
                       );
                     }
                   },
-                  child: Text('Submit',
-                      style: TextStyle(
-                          fontSize:
-                              20)), // Increase the font size of the button text
+                  child: Text('Submit', style: TextStyle(fontSize: 20)),
                 ),
               ),
             ],

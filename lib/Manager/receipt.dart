@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 
 class receipt extends StatelessWidget {
-  // Change this to lowercase 'receipt'
   final String name;
   final DateTime date;
   final String location;
   final String address;
-  final String address2; // New field
+  final String address2;
   final String description;
 
   receipt({
-    // Change this to lowercase 'receipt'
     required this.name,
     required this.date,
     required this.location,
     required this.address,
-    required this.address2, // New field
+    required this.address2,
     required this.description,
   });
 
