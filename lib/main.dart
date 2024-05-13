@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manju_three/pages/bottomnav.dart';
+import 'package:manju_three/pages/surfer_home.dart';
 import 'package:manju_three/screens/importer_menu.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home: const BottomNav(),
+      home: const SurferHome(),
     );
   }
 }
