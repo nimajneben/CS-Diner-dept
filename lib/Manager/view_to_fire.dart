@@ -32,10 +32,11 @@ class StaffProfilePage extends StatefulWidget {
 class _StaffProfilePageState extends State<StaffProfilePage> {
     // make sure 'admin' is logged in
     Future<bool> _isAdmin() async {
-        User? user = FirebaseAuth.instance.currentUser;
+        final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-            DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-            return userDoc.exists && userDoc['role'] == 'admin';
+            final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+            final role = userDoc.data()?['role'];
+            return role == 'admin';
         }
         return false;
     }

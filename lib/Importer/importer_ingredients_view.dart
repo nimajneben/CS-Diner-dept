@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final db = FirebaseFirestore.instance;
+late Future<List<Ingredient>> ingredientList;
 
 //Importer Ingredients Main Screen Widget
 class ImporterIngredientsView extends StatelessWidget {
@@ -40,7 +41,7 @@ class ImporterIngredientsList extends StatefulWidget {
 class _ImporterIngredientsList extends State<ImporterIngredientsList> {
   @override
   Widget build(BuildContext context) {
-    Future<List<Ingredient>> ingredientList = getDatafromFireStore();
+    ingredientList = getDatafromFireStore();
     return FutureBuilder(
       // FutureBuilder
       // Show spinner while contents load
@@ -58,7 +59,8 @@ class _ImporterIngredientsList extends State<ImporterIngredientsList> {
                 final bool restock = snapshot.data?[index].restock ?? false;
                 return ListTile(
                   title: Text(name),
-                  subtitle: Text('$amount in stock'),
+                  subtitle: Text(
+                      '$amount in stock, restock ${restock ? 'needed' : 'not needed'}'),
                   onTap: () => {
                     Scaffold.of(context).showBottomSheet((context) {
                       return (ingredientBottomSheet(
@@ -135,6 +137,7 @@ Widget ingredientBottomSheet(BuildContext context, bool edit_mode,
                           restock = value;
                           if (edit_mode) {
                             updateFireStore('$name', null, restock);
+                            getDatafromFireStore();
                           }
                         });
                       }),
@@ -218,17 +221,14 @@ Future<List<Ingredient>> getDatafromFireStore() async {
   return ingredientList;
 }
 
-void updateFireStore(String name, [int? amount, bool? needsRestock]) {
+void updateFireStore(String name, [int? amount, bool? needRestock]) {
   if (amount != null) {
     db.collection("Ingredients").doc(name).update({'amount': amount});
-    print('updated amount');
+    // print('updated amount');
   }
-  if (needsRestock != null) {
-    db
-        .collection("Ingredients")
-        .doc(name)
-        .update({'needsRestock': needsRestock});
-    print('updated bool');
+  if (needRestock != null) {
+    db.collection("Ingredients").doc(name).update({'needRestock': needRestock});
+    // print('updated bool');
   }
 }
 
@@ -239,7 +239,7 @@ void deletefromFireStore(String name) {
 void addtoFireStore(String name, int amount, bool needsRestock) {
   final tempArray = <String, String>{
     "amount": amount.toString(),
-    "needsRestock": needsRestock.toString()
+    "needRestock": needsRestock.toString()
   };
   db.collection("Ingredients").doc(name).set(tempArray);
 }
