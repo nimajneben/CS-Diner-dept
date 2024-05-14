@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:manju_three/Manager/manager_approval.dart';
+
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({super.key});
@@ -68,7 +70,14 @@ class _ManagerHomeState extends State<ManagerHome> {
   Widget _buildGridItem(String title) {
     return InkWell(
       onTap: () {
-        print('$title clicked');
+        if (title == 'Customer Registration') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ManagerApproval()),
+          );
+        } else {
+          print('$title clicked');
+        }
       },
       child: Container(
         margin: EdgeInsets.all(8.0),

@@ -13,6 +13,8 @@ import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/widget/widget_support.dart';
 
+import '../pages/login.dart';
+
 class AddMenuItem extends StatefulWidget {
   const AddMenuItem({super.key});
 
@@ -28,7 +30,7 @@ class _AddMenuItemState extends State<AddMenuItem> {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
-  final List<String> categories = ["Appitizers", "Main", "Dessert", "Drinks"];
+  final List<String> categories = ["Appetizers", "Main", "Desserts", "Drinks"];
   String? value;
 
   TextEditingController itemName = TextEditingController();
