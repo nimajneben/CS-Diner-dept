@@ -1,11 +1,7 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
-import "package:firebase_auth/firebase_auth.dart";
-import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/material.dart%20";
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
 import "package:manju_three/methods/data.dart";
 import "package:manju_three/pages/login.dart";
 
@@ -29,7 +25,7 @@ class _SurferHomeState extends State<SurferHome> {
       Stream<QuerySnapshot> newStream = FirebaseFirestore.instance
           .collection('Menu')
           .where('itemName', isGreaterThanOrEqualTo: query)
-          .where('itemName', isLessThanOrEqualTo: query + '\uf8ff')
+          .where('itemName', isLessThanOrEqualTo: '$query\uf8ff')
           .snapshots();
 
       setState(() {
@@ -42,21 +38,20 @@ class _SurferHomeState extends State<SurferHome> {
   }
 
   ontheload() async {
-    foodStream = await DatabaseFunctions().getMenuItems("Drinks");
-    foodStream!.listen((data) {
-      print("Stream data received: $data");
-    }, onError: (error) {
-      print("Error in stream: $error");
-    });
+    foodStream =  FirebaseFirestore.instance
+        .collection('Menu')
+        .orderBy('rating', descending: true)
+        .limit(10)
+        .snapshots();
     setState(() {});
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     ontheload();
     super.initState();
   }
+
 
   Widget allItems() {
     return StreamBuilder(
@@ -89,12 +84,12 @@ class _SurferHomeState extends State<SurferHome> {
                                   )));
                     },
                     child: Container(
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       child: Material(
                         elevation: 5.0,
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -107,9 +102,9 @@ class _SurferHomeState extends State<SurferHome> {
                                   child: CachedNetworkImage(
                                     imageUrl: ds["imageUrl"],
                                     placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
+                                        const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     width: 100,
                                     height: 100,
                                   ),
@@ -118,20 +113,20 @@ class _SurferHomeState extends State<SurferHome> {
                                   ds["itemName"],
                                   style: AppWidget.semiBoldTextFieldStyle(),
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
 
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      "\$" + ds["price"].toString(),
+                                      "\$${ds["price"]}",
                                       style: AppWidget.semiBoldTextFieldStyle(),
                                     ),
-                                    SizedBox(width: 30.0),
+                                    const SizedBox(width: 30.0),
                                     Icon(Icons.star,
                                         color: Colors.yellow[800], size: 20.0),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Text(ds['rating'].toString(),
@@ -186,12 +181,12 @@ class _SurferHomeState extends State<SurferHome> {
                                     )));
                       },
                       child: Container(
-                        margin: EdgeInsets.only(right: 20.0, bottom: 30),
+                        margin: const EdgeInsets.only(right: 20.0, bottom: 30),
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(20.0),
                           child: Container(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -205,17 +200,17 @@ class _SurferHomeState extends State<SurferHome> {
                                   child: CachedNetworkImage(
                                     imageUrl: ds["imageUrl"],
                                     placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
+                                        const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     width: 90,
                                     height: 90,
                                   ),
                                 ),
-                                SizedBox(width: 20.0),
+                                const SizedBox(width: 20.0),
                                 Column(children: [
-                                  SizedBox(height: 5.0),
-                                  Container(
+                                  const SizedBox(height: 5.0),
+                                  SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
                                     //handles the text overflow by wrapping the text
@@ -224,13 +219,13 @@ class _SurferHomeState extends State<SurferHome> {
                                       style: AppWidget.semiBoldTextFieldStyle(),
                                     ),
                                   ),
-                                  SizedBox(height: 5.0),
-                                  Container(
+                                  const SizedBox(height: 5.0),
+                                  SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
                                     //handles the text overflow by wrapping the text
                                     child: Text(
-                                      "\$" + ds["price"].toString(),
+                                      "\$${ds["price"]}",
                                       style: AppWidget.semiBoldTextFieldStyle(),
                                     ),
                                   ),
@@ -242,7 +237,7 @@ class _SurferHomeState extends State<SurferHome> {
                       ),
                     );
                   })
-              : CircularProgressIndicator();
+              : const CircularProgressIndicator();
         });
   }
 
@@ -267,7 +262,7 @@ class _SurferHomeState extends State<SurferHome> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Text(
                   "Hi, stranger!",
                   style: AppWidget.headLineTextFieldStyle(),
@@ -276,18 +271,18 @@ class _SurferHomeState extends State<SurferHome> {
                   "Delicious food for you to enjoy.\nMake an account today!",
                   style: AppWidget.lightTextFieldStyle(),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Container(
-                    margin: EdgeInsets.only(right: 20.0), child: showItems()),
-                SizedBox(height: 20.0),
+                    margin: const EdgeInsets.only(right: 20.0), child: showItems()),
+                const SizedBox(height: 20.0),
 
-                Container(height: 200.0, child: allItems()),
+                SizedBox(height: 200.0, child: allItems()),
 
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
 
                 //Here starts the list menu
                 Container(
-                    margin: EdgeInsets.only(bottom: 50),
+                    margin: const EdgeInsets.only(bottom: 50),
                     height: 300.0,
                     child: allItemsVertical()),
               ],
@@ -319,7 +314,7 @@ class _SurferHomeState extends State<SurferHome> {
                 decoration: BoxDecoration(
                     color: appetizer ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(10.0)),
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: Image.asset(
                   "images/Salad.jpg",
                   cacheHeight: 70,
@@ -344,7 +339,7 @@ class _SurferHomeState extends State<SurferHome> {
                 decoration: BoxDecoration(
                     color: appetizer ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(10.0)),
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: Image.asset(
                   "images/main.jpg",
                   cacheHeight: 70,
@@ -371,7 +366,7 @@ class _SurferHomeState extends State<SurferHome> {
                 decoration: BoxDecoration(
                     color: appetizer ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(10.0)),
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: Image.asset(
                   "images/dessert.jpg",
                   cacheHeight: 70,
@@ -397,7 +392,7 @@ class _SurferHomeState extends State<SurferHome> {
                 decoration: BoxDecoration(
                     color: appetizer ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(10.0)),
-                padding: EdgeInsets.all(2),
+                padding: const EdgeInsets.all(2),
                 child: Image.asset(
                   "images/soda.jpg",
                   cacheHeight: 70,

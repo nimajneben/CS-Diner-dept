@@ -1,18 +1,16 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart%20';
-import 'package:flutter/widgets.dart';
-
 import '../widget/widget_support.dart';
+import "package:manju_three/review/user_ratings.dart";
 
 class FoodDetails extends StatefulWidget {
-  String itemName, imageUrl, description, chef, allergens, chefId;
-  double price, rating;
-  FoodDetails({super.key,
+  final String itemName, imageUrl, description, chef, allergens, chefId;
+  final double price, rating;
+
+  FoodDetails({
+    super.key,
     required this.itemName,
     required this.imageUrl,
     required this.description,
@@ -20,7 +18,8 @@ class FoodDetails extends StatefulWidget {
     required this.allergens,
     required this.chefId,
     required this.price,
-    required this.rating});
+    required this.rating,
+  });
 
   @override
   State<FoodDetails> createState() => _FoodDetailsState();
@@ -32,13 +31,12 @@ class _FoodDetailsState extends State<FoodDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     total = widget.price;
     super.initState();
   }
 
   Future<void> addCartItem() async {
-    String userId = FirebaseAuth.instance.currentUser!.uid; // Ensure the user is logged in
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
     CollectionReference cart = FirebaseFirestore.instance.collection('users').doc(userId).collection('Cart');
 
@@ -51,171 +49,147 @@ class _FoodDetailsState extends State<FoodDetails> {
       'price': widget.price,
       'rating': widget.rating,
       'description': widget.description,
-      'quantity': aNumber,  // Default quantity
-    })
-        .then((value) => print("Item Added"))
-        .catchError((error) => print("Failed to add item: $error"));
+      'quantity': aNumber,
+    }).then((value) => print("Item Added")).catchError((error) => print("Failed to add item: $error"));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin:  EdgeInsets.only(top: 30, left: 10, right: 20),
-        child:
-
-        Column(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(widget.itemName, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [GestureDetector(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                child: Column(children: [Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black)])),
-
-              CachedNetworkImage(imageUrl: widget.imageUrl,
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.imageUrl,
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height/2.5,
-                fit:BoxFit.fill,),
-              // Image.asset("images/Salad.jpg",
-              //   width: MediaQuery.of(context).size.width,
-              //   height: MediaQuery.of(context).size.height/2.5,
-              // fit:BoxFit.fill,),
-              SizedBox(height: 20,),
-
-
+                height: MediaQuery.of(context).size.height / 2.5,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 20),
               Row(
-
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
+                  Text(widget.itemName, style: AppWidget.boldTextFieldStyle()),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserRatings(itemName: widget.itemName), // Ensure ReviewPage exists
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.yellow[900]),
+                            const SizedBox(width: 5),
+                            Text(widget.rating.toStringAsFixed(2), style: AppWidget.semiBoldTextFieldStyle()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text(widget.description, style: AppWidget.lightTextFieldStyle()),
+              const SizedBox(height: 10),
+              Text("Chef: ${widget.chef}", style: AppWidget.semiBoldTextFieldStyle()),
+              const SizedBox(height: 10),
+              Text("Allergens: ${widget.allergens}", style: AppWidget.semiBoldTextFieldStyle()),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (aNumber > 1) {
+                            setState(() {
+                              aNumber--;
+                              total = widget.price * aNumber;
+                            });
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(Icons.remove, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(aNumber.toString(), style: AppWidget.semiBoldTextFieldStyle( )),
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            aNumber++;
+                            total = widget.price * aNumber;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(Icons.add, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.itemName,
-                          style: AppWidget.boldTextFieldStyle()),
+                      Text("Total Price:", style: AppWidget.boldTextFieldStyle()),
+                      Text("\$${total.toStringAsFixed(2)}", style: AppWidget.headLineTextFieldStyle()),
                     ],
                   ),
-                  //Spacer() +> ensures maximum space between the two widgets
-                  Spacer(),
-
-                  //Here lies the subtract button
-                  GestureDetector(
-                    onTap: (){
-                      if(aNumber>1){
-                        --aNumber;
-                        total = total - widget.price;
-                        setState(() {
-
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black, borderRadius: BorderRadius.circular(10)),
-                      child: Icon(Icons.remove, color: Colors.white,
-                      ),
-
+                ],
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    addCartItem();
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2.5,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-
-                  ),
-                  SizedBox(width: 20,),
-                  Text(aNumber.toString(), style: AppWidget.semiBoldTextFieldStyle()),
-                  SizedBox(width: 20,),
-
-                  //Here lies the add button
-                  GestureDetector(
-                    onTap: (){
-                      ++aNumber;
-                      total = widget.price * aNumber;
-                      setState(() {
-
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black, borderRadius: BorderRadius.circular(10)),
-                      child: Icon(Icons.add, color: Colors.white,
-                      ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Add to Cart", style: TextStyle(color: Colors.white, fontSize: 20)),
+                        SizedBox(width: 10),
+                        Icon(Icons.shopping_cart, color: Colors.white),
+                      ],
                     ),
                   ),
-                  SizedBox(width: 20,),
-
-
-                ],),
-              SizedBox(height: 20,),
-              Row(
-                children: [
-
-
-
-                  Row(children: [Icon(Icons.star, color: Colors.yellow[900],),
-                    SizedBox(width: 5,),
-                    Text(widget.rating.toString(), style: AppWidget.semiBoldTextFieldStyle()),],),
-
-
-                ],),
-              SizedBox(height: 20,),
-              Text(widget.description, style: AppWidget.lightTextFieldStyle(),
-                maxLines: 3,),
-              SizedBox(height: 20,),
-              Text("Chef: " + widget.chef, style: AppWidget.semiBoldTextFieldStyle()),
-              SizedBox(height: 20,),
-              Text("Allergens: " + widget.allergens,
-                  style: AppWidget.semiBoldTextFieldStyle()),
-              SizedBox(height: 20,),
-              Spacer(),
-
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children:[
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Total Price:",
-                                style: AppWidget.boldTextFieldStyle()),
-                            Text("\$" + total.toStringAsFixed(2), style: AppWidget.headLineTextFieldStyle())
-                          ]
-                      ),
-                      GestureDetector(
-                          onTap: () {
-
-                            Navigator.pop(context);
-                            addCartItem();
-                          },
-                          child: Container(
-                              width: MediaQuery.of(context).size.width/2.5,
-                              padding: EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text("Add to Cart",
-                                    style: TextStyle(color: Colors.white,
-                                        fontSize: 20),),
-
-                                  Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(30)
-                                    ),
-                                    child: Icon(Icons.shopping_cart,
-                                      color: Colors.white,
-                                      size: 20,),
-                                  )
-                                ],
-                              )
-                          )
-                      )
-                    ]
                 ),
-              )
-            ] ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

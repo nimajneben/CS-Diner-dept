@@ -24,6 +24,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final _numPeopleController = TextEditingController();
   final _deliveryAddressController = TextEditingController();
 
+  String selectedTab = "Eat In"; // Default selected tab
+
   // Method to handle updating user data
   Future<void> _updateUserData(double total) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -72,7 +74,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   // Method to handle creating orders
-  Future<void> createOrder(double total) async {
+  Future<void> createOrder(double total, Map<String, dynamic> checkoutMethod) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('User not logged in')));
@@ -91,6 +93,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'itemName': data['itemName'],
         'quantity': data['quantity'],
         'price': data['price'],
+        'chef': data['chef'],
+        'chefId': data['chefId'],
+        'isReady': false
       };
     }).toList();
 
@@ -102,6 +107,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
       'isOrderComplete': false,
       'totalPrice': total,
       'items': items,
+      'checkoutMethod': checkoutMethod, // Add the checkout method details here
+      'orderDate': Timestamp.now(), // Add the timestamp here
     });
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Order Created Successfully')));
@@ -116,12 +123,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
 
     CollectionReference cartRef = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('Cart');
-
-    QuerySnapshot cartSnapshot = await cartRef.get();
-
+    CollectionReference menuRef = FirebaseFirestore.instance.collection('Menu');
     WriteBatch batch = FirebaseFirestore.instance.batch();
-    for (DocumentSnapshot doc in cartSnapshot.docs) {
-      batch.delete(doc.reference);
+    QuerySnapshot cartSnapshot = await cartRef.get();
+    try {
+      for (DocumentSnapshot cartDoc  in cartSnapshot.docs) {
+        DocumentReference menuDocRef = menuRef.doc(cartDoc.id);
+        DocumentSnapshot menuDoc = await menuDocRef.get();
+
+        int numberOfOrders = menuDoc['numberOfOrders'] ?? 0;
+        int quantity = cartDoc['quantity'];
+        numberOfOrders += quantity;
+        // Update the document with the new number of orders
+        batch.update(menuDoc.reference, {'numberOfOrders': numberOfOrders});
+        batch.delete(cartDoc.reference);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      throw Exception('Failed to update user data: $e');
     }
 
     await batch.commit();
@@ -266,12 +285,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            tabs: const [
               Tab(text: "Eat In"),
               Tab(text: "Pickup"),
               Tab(text: "Delivery"),
             ],
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  setState(() => selectedTab = "Eat In");
+                  break;
+                case 1:
+                  setState(() => selectedTab = "Pickup");
+                  break;
+                case 2:
+                  setState(() => selectedTab = "Delivery");
+                  break;
+              }
+            },
           ),
           centerTitle: true,
           title: Text('Checkout', style: AppWidget.boldTextFieldStyle()),
@@ -291,8 +323,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
             onPressed: () async {
               if (finalTotal > 0) {
                 try {
+                  Map<String, dynamic> checkoutMethod = {};
+
+                  switch (selectedTab) {
+                    case "Eat In":
+                      checkoutMethod = {
+                        'method': 'Dine In',
+                        'date': _dineInDateController.text,
+                        'time': _dineInTimeController.text,
+                        'numberOfPeople': _numPeopleController.text,
+                      };
+                      break;
+                    case "Pickup":
+                      checkoutMethod = {
+                        'method': 'Pickup',
+                        'date': _pickupDateController.text,
+                        'time': _pickupTimeController.text,
+                      };
+                      break;
+                    case "Delivery":
+                      checkoutMethod = {
+                        'method': 'Delivery',
+                        'address': _deliveryAddressController.text,
+                      };
+                      break;
+                  }
+
                   await _updateUserData(finalTotal);
-                  await createOrder(finalTotal);
+                  await createOrder(finalTotal, checkoutMethod);
                   await clearCart();
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Purchase completed successfully!'),
