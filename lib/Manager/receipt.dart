@@ -7,7 +7,7 @@ class Receipt extends StatelessWidget {
   final String address;
   final String address2;
   final String description;
-  final String accuseName; // New field
+  final String accuseName;
 
   Receipt({
     required this.name,
@@ -16,7 +16,7 @@ class Receipt extends StatelessWidget {
     required this.address,
     required this.address2,
     required this.description,
-    required this.accuseName, // New field
+    required this.accuseName,
   });
 
   @override
@@ -34,12 +34,12 @@ class Receipt extends StatelessWidget {
             Text('Date: ${date.month}/${date.day}/${date.year}',
                 style: TextStyle(fontSize: 20)),
             Text('Status: $address2',
-                style: TextStyle(fontSize: 20)), // New field
+                style: TextStyle(fontSize: 20)),
             Text('Location: $location', style: TextStyle(fontSize: 20)),
             Text('Address Complain To: $address',
                 style: TextStyle(fontSize: 20)),
             Text('Description: $description', style: TextStyle(fontSize: 20)),
-            Text('Accused: $accuseName', style: TextStyle(fontSize: 20)), // Display the new field
+            Text('Accused: $accuseName', style: TextStyle(fontSize: 20)),
           ],
         ),
       ),

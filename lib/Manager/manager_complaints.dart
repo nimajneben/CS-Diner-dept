@@ -19,14 +19,14 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
   final _nameController = TextEditingController();
   final _locationController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _anotherNameController = TextEditingController(); // New TextEditingController
+  final _anotherNameController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
     _locationController.dispose();
     _descriptionController.dispose();
-    _anotherNameController.dispose(); // Dispose the new controller
+    _anotherNameController.dispose();
     super.dispose();
   }
 
@@ -150,9 +150,9 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                       spreadRadius: 0.0)
                 ]),
                 child: TextFormField(
-                  controller: _anotherNameController, // Use the new controller
+                  controller: _anotherNameController,
                   decoration: InputDecoration(
-                    labelText: 'Name ', // Label for the new text field
+                    labelText: 'Name ',
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.all(15),
@@ -166,7 +166,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
               SizedBox(height: 30),
               Container(
                 margin: EdgeInsets.only(
-                    top: 10, left: 20, right: 20), // Adjust the top margin here
+                    top: 10, left: 20, right: 20),
                 decoration: BoxDecoration(boxShadow: [
                   BoxShadow(
                       color: Color(0xff1D1617).withOpacity(0.11),
