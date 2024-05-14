@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/Manager/manager_approval.dart';
-
+import 'package:manju_three/Manager/manager_guilty.dart'; // Import the ManagerGuilty page
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({super.key});
@@ -37,10 +37,10 @@ class _ManagerHomeState extends State<ManagerHome> {
                     crossAxisCount: 2,
                     childAspectRatio: 1,
                     children: <Widget>[
-                      _buildGridItem('Customer Registration'),
-                      _buildGridItem('De-register customers'),
-                      _buildGridItem('Compliments'),
-                      _buildGridItem('Complaints'),
+                      _buildGridItem('Customer Registration', context),
+                      _buildGridItem('De-register customers', context),
+                      _buildGridItem('Compliments', context),
+                      _buildGridItem('Complaints', context), // This will now navigate to ManagerGuilty
                     ],
                   ),
                 ),
@@ -51,11 +51,11 @@ class _ManagerHomeState extends State<ManagerHome> {
                     crossAxisCount: 2,
                     childAspectRatio: 1,
                     children: <Widget>[
-                      _buildGridItem('Hire'),
-                      _buildGridItem('Fire'),
-                      _buildGridItem('Manage Salary'),
-                      _buildGridItem('Promote'),
-                      _buildGridItem('Demote'),
+                      _buildGridItem('Hire', context),
+                      _buildGridItem('Fire', context),
+                      _buildGridItem('Manage Salary', context),
+                      _buildGridItem('Promote', context),
+                      _buildGridItem('Demote', context),
                     ],
                   ),
                 ),
@@ -67,13 +67,18 @@ class _ManagerHomeState extends State<ManagerHome> {
     );
   }
 
-  Widget _buildGridItem(String title) {
+  Widget _buildGridItem(String title, BuildContext context) {
     return InkWell(
       onTap: () {
         if (title == 'Customer Registration') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ManagerApproval()),
+          );
+        } else if (title == 'Complaints') { // Add this condition
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ManagerGuilty()),
           );
         } else {
           print('$title clicked');
