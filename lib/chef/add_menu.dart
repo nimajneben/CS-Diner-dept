@@ -96,7 +96,7 @@ class _AddMenuItemState extends State<AddMenuItem> {
         "chefId": chefId,
       };
 
-      await DatabaseFunctions().addMemuItem(itemData).then((value) {
+      await DatabaseFunctions().addMemuItem(itemData, itemName.text.trim()).then((value) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.greenAccent,
