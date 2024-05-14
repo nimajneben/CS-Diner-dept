@@ -23,7 +23,7 @@ class _ManagerNavState extends State<ManagerNav> {
       ManagerHome(), // Set ManagerHome as the first page
       ManagerProfile(), // Add ManagerProfile as the second page
       // Add other pages here when they are ready
-      ManageStaff();
+      ManageStaff(),
     ];
     currentPage = pages[currentTabIndex];
   }
