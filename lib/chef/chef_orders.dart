@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:manju_restaurant/pages/login.dart';
+import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/chef/chef_home.dart';
 
-
-// SERVE ORDERS -- 
+// SERVE ORDERS --
 //       >> Display All Orders (Menu Item Names) -- shows items they're responsible for
 //       >> 'SERVED' Button -- click after serving all items
-//       >> Firestore 'Orders' database : 
+//       >> Firestore 'Orders' database :
 //                >> 'isOrderComplete' == true
 //                >> 'items' map -- name (string), price (number), quantity (number)
 
@@ -45,7 +44,6 @@ _________________________________________
 
 */
 
-
 class Item {
   final String name;
   final int quantity;
@@ -54,12 +52,15 @@ class Item {
 }
 
 class Order {
-    final String orderId;
-    final bool isOrderComplete;
-    final List<Item> items;
+  final String orderId;
+  final bool isOrderComplete;
+  final List<Item> items;
 
-    Order({required this.orderId, required this.isOrderComplete, required this.items});
-  }
+  Order(
+      {required this.orderId,
+      required this.isOrderComplete,
+      required this.items});
+}
 
 class OrdersPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -74,11 +75,11 @@ class OrdersPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ChefHome())
-          ),
+              MaterialPageRoute(builder: (context) => ChefHome())),
         ),
         backgroundColor: Colors.redAccent,
-        title: Text("Pending Orders", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Pending Orders",
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -89,7 +90,10 @@ class OrdersPage extends StatelessWidget {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('Orders').where('isOrderComplete', isEqualTo: false).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('Orders')
+            .where('isOrderComplete', isEqualTo: false)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -101,9 +105,14 @@ class OrdersPage extends StatelessWidget {
           final orders = snapshot.data!.docs.map((doc) {
             final itemsMap = Map<String, dynamic>.from(doc['items']);
             final List<Item> items = itemsMap.entries.map((entry) {
-              return Item(name: entry.value['itemName'], quantity: entry.value['quantity']);
+              return Item(
+                  name: entry.value['itemName'],
+                  quantity: entry.value['quantity']);
             }).toList();
-            return Order(orderId: doc.id, isOrderComplete: doc['isOrderComplete'], items: items);
+            return Order(
+                orderId: doc.id,
+                isOrderComplete: doc['isOrderComplete'],
+                items: items);
           }).toList();
 
           return ListView.builder(
@@ -111,20 +120,25 @@ class OrdersPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = orders[index];
               return ListTile(
-                title: Text('Order ID: ${order.id}'),
+                title: Text('Order ID: ${order.orderId}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (final item in order.items) Text('Item: ${item.name}, Quantity: ${item.quantity}'),
+                    for (final item in order.items)
+                      Text('Item: ${item.name}, Quantity: ${item.quantity}'),
                   ],
                 ),
                 trailing: ElevatedButton(
                   onPressed: () {
-                    FirebaseFirestore.instance.collection('Orders').doc(order.id).update({
-                      'isOrderComplete': true,
-                    })
-                    .then((_) => print('Order is served: ${order.id}'))
-                    .catchError((error) => print('Error updating order: $error'));
+                    FirebaseFirestore.instance
+                        .collection('Orders')
+                        .doc(order.orderId)
+                        .update({
+                          'isOrderComplete': true,
+                        })
+                        .then((_) => print('Order is served: ${order.orderId}'))
+                        .catchError(
+                            (error) => print('Error updating order: $error'));
                   },
                   child: Text('SERVED'),
                 ),
@@ -167,5 +181,4 @@ class OrdersPage extends StatelessWidget {
       },
     );
   }
-  
 }

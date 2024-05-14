@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:manju_three/chef/add_menu.dart';
 import 'package:manju_three/chef/chef_home.dart';
+import 'package:manju_three/chef/chef_ingredients.dart';
+import 'package:manju_three/chef/chef_orders.dart';
 import 'package:manju_three/chef/chef_profile.dart';
+import 'package:manju_three/chef/edit_item.dart';
 import 'package:manju_three/chef/edit_menu.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
