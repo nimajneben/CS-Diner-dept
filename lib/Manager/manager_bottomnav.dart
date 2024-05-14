@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manju_three/Manager/manager_home.dart';
 import 'package:manju_three/Manager/manager_profile.dart';
+import 'package:manju_three/Manager/manage_staff.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class ManagerNav extends StatefulWidget {
@@ -22,6 +23,7 @@ class _ManagerNavState extends State<ManagerNav> {
       ManagerHome(), // Set ManagerHome as the first page
       ManagerProfile(), // Add ManagerProfile as the second page
       // Add other pages here when they are ready
+      ManageStaff();
     ];
     currentPage = pages[currentTabIndex];
   }
@@ -50,6 +52,7 @@ class _ManagerNavState extends State<ManagerNav> {
             color: Colors.white,
           ), // Icon for the ManagerProfile page
           // Add more icons here when other pages are ready
+          Icon(Icons.group, color: Colors.white), // Manage Staff
         ],
       ),
       body: currentPage,
