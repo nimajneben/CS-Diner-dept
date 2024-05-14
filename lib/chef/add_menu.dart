@@ -5,14 +5,12 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manju_three/chef/chef_bottomnav.dart';
 import 'package:manju_three/methods/data.dart';
+import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/widget/widget_support.dart';
 
 import '../pages/login.dart';
