@@ -116,7 +116,7 @@ class ManageStaff extends StatelessWidget {
                     children: entry.value.map((doc) {
                         return ListTile(
                             title: Text(doc['name']),
-                            subtitle: Text('ID: ${doc.id}\nCompliments: ${doc['compliments'] ?? 'N/A'}\nComplaints: ${doc['complaints'] ?? 'N/A'}\nWarnings: ${doc['warnings'] ?? 'N/A'}'),
+                            subtitle: Text('ID: ${doc.id}\nEmail: ${doc['email']}'),
                             trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -124,7 +124,7 @@ class ManageStaff extends StatelessWidget {
                                     onPressed: () {
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => ManagerProfile(doc: doc)),
+                                        MaterialPageRoute(builder: (context) => StaffProfilePage(staffId: doc.id)),
                                     );
                                     },
                                     child: Text('VIEW'),
