@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:manju_three/methods/data.dart';
 
 class Wallet {
-  late int balance;
-  Wallet([int? amount]) {
-    balance = amount ?? 0;
+  late double balance;
+  Wallet([double? amount]) {
+    balance = amount ?? 0.0;
   }
 }
 
@@ -14,7 +14,7 @@ class WalletModel extends ChangeNotifier {
   final _wallet = Wallet();
 
   // Get wallet balance
-  int get balance => _wallet.balance;
+  double get balance => _wallet.balance;
 
   // Add balance to the wallet
   void addBalance(int amount) {
@@ -31,9 +31,9 @@ Future<int> getWalletAmount() async {
 
 // Wallet that's synchronized with Firestore
 class SyncWallet {
-  int balance = 0;
+  double balance = 0.0;
   final database = FirebaseFirestore.instance;
-  late final dynamic documentReference;
+  var documentReference;
 
   // Obtain balance from Firestore.
   // If not available, then just initialize a blank wallet.
@@ -42,10 +42,10 @@ class SyncWallet {
     documentReference.get().then((DocumentSnapshot doc) {
       if (doc.exists) {
         final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        if (data.containsKey("deposit")) {
-          balance = int.parse(data["deposit"].toString());
+        if (data.containsKey("wallet")) {
+          balance = double.parse(data["wallet"].toString());
         } else {
-          // Initalize balance if user doesn't have a deposit
+          // Initalize balance if user doesn't have a wallet
           balance = 0;
         }
       } else {
@@ -57,23 +57,23 @@ class SyncWallet {
   // Publish new balance to Firestore
   void updateAmount() {
     documentReference = database.collection("users").doc(uid);
-    documentReference.update({'deposit': balance}).then(
-        (value) => debugPrint("Balance Updated Successfully"),
-        onerror: (e) => debugPrint("Balance failed to update: $e"));
+    documentReference.update({'wallet': balance});
   }
 }
 
-class SyncWalletModel extends ChangeNotifier {
+class SyncWalletModel with ChangeNotifier {
   late final SyncWallet _wallet;
   SyncWalletModel(uid) {
     _wallet = SyncWallet(uid);
+    notifyListeners();
   }
 
-  int get balance => _wallet.balance;
+  double get balance => _wallet.balance;
 
   // Add balance to the wallet
-  void addBalance(int amount) {
+  void addBalance(double amount) {
     _wallet.balance += amount;
     _wallet.updateAmount();
+    notifyListeners();
   }
 }
