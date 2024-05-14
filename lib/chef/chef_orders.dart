@@ -6,7 +6,7 @@ import 'package:manju_three/chef/chef_home.dart';
 
 // SERVE ORDERS --
 //       >> Display All Orders (Menu Item Names) -- shows items they're responsible for
-//       >> 'SERVED' Button -- click after serving all items
+//       >> 'SERVED' Button -- click after serving each items
 //       >> Firestore 'Orders' database :
 //                >> 'isOrderComplete' == true
 //                >> 'items' map -- itemName (string), price (number), quantity (number),
@@ -22,7 +22,8 @@ class Item {
       {required this.name,
       required this.quantity,
       required this.chefId,
-      required this.isReady});
+      required this.isReady}
+  );
 }
 
 class Order {
@@ -33,7 +34,8 @@ class Order {
   Order(
       {required this.orderId,
       required this.isOrderComplete,
-      required this.items});
+      required this.items}
+  );
 }
 
 class OrdersPage extends StatelessWidget {
@@ -78,13 +80,18 @@ class OrdersPage extends StatelessWidget {
 
           final orders = snapshot.data!.docs.map((doc) {
             final itemsMap = Map<String, dynamic>.from(doc['items']);
-            final List<Item> items = itemsMap.entries.map((entry) {
-              return Item(
-                  name: entry.value['itemName'],
-                  quantity: entry.value['quantity'],
-                  chefId: entry.value['chefId'],
-                  isReady: entry.value['isReady']);
-            }).toList();
+            final List<Item> items = [];
+            itemsMap.forEach((key, value) {
+              if (value['chefId'] == chefID) {
+                items.add(Item(
+                  name: value['itemName'],
+                  quantity: value['quantity'],
+                  chefId: value['chefId'],
+                  isReady: value['isReady'],
+                ));
+              }
+            });
+            
             return Order(
                 orderId: doc.id,
                 isOrderComplete: doc['isOrderComplete'],
@@ -95,18 +102,15 @@ class OrdersPage extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              final chefItems = order.items
-                  .where((item) => item.chefId == chefID)
-                  .toList(); // WANT: list of items in the order assigned to chef by 'chefId'
-
+              final chefItems = order.items;
+              
               return ListTile(
                 title: Text('Order ID: ${order.orderId}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    for (final item in chefItems)
-                      Text('Item: ${item.name}, Quantity: ${item.quantity}'),
-                  ],
+                  children: chefItems
+                      .map((item) => Text('Item: ${item.name}, Quantity: ${item.quantity}'))
+                      .toList(),
                 ),
                 trailing: Column(
                   children: chefItems.map((item) {
@@ -115,14 +119,28 @@ class OrdersPage extends StatelessWidget {
                         FirebaseFirestore.instance
                             .collection('Orders')
                             .doc(order.orderId)
-                            .update({
-                          'items.${item.name}.isReady': true,
-                        }).then((value) {
-                          print('Item is served: ${item.name}');
-                          _checkOrderComplete(order);
-                        });
-                        // .catchError(
-                        //     (error) => print('Error updating item: $error'));
+                            .get()
+                            .then((DocumentSnapshot documentSnapshot) {
+                              if (documentSnapshot.exists) {
+                                Map<String, dynamic> items = documentSnapshot['items'];
+                                String itemKey = items.keys.firstWhere(
+                                  (k) => items[k]['itemName'] == item.name && items[k]['chefId'] == chefID,
+                                  orElse: () => null,
+                                );
+                                if (itemKey != null) {
+                                  items[itemKey]['isReady'] = true;
+                                  FirebaseFirestore.instance
+                                      .collection('Orders')
+                                      .doc(order.orderId)
+                                      .update({'items': items}).then((value) {
+                                        print('Item is served: ${item.name}');
+                                        _checkOrderComplete(order, items);
+                                  });
+                                }
+                              } else {
+                                print('Document does not exist on the database');
+                              }
+                            });
                       },
                       child: Text('SERVED'),
                     );
@@ -136,8 +154,8 @@ class OrdersPage extends StatelessWidget {
     );
   }
 
-  void _checkOrderComplete(Order order) {
-    final allItemsReady = order.items.every((item) => item.isReady);
+  void _checkOrderComplete(Order order, Map<String, dynamic> items) {
+    final allItemsReady = items.values.every((item) => item['isReady']);
     if (allItemsReady) {
       FirebaseFirestore.instance
           .collection('Orders')
