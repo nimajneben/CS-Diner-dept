@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/chef/add_menu.dart';
+import 'package:manju_three/chef/edit_menu.dart';
+import 'package:manju_three/chef/chef_ingredients.dart';
+import 'package:manju_three/chef/chef_orders.dart';
 import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/widget/widget_support.dart';
@@ -72,6 +75,121 @@ class _ChefHomeState extends State<ChefHome> {
             ),
           ),
         ),
+
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => EditMenu()));
+          },
+          child: Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset(
+                      "images/Salad.jpg",
+                      cacheHeight: 100,
+                      cacheWidth: 100,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Edit Menu Item",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ChefIngredientsPage()));
+          },
+          child: Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset(
+                      "images/Salad.jpg",
+                      cacheHeight: 100,
+                      cacheWidth: 100,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Request Ingredients",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OrdersPage()));
+          },
+          child: Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Image.asset(
+                      "images/dessert.jpg",
+                      cacheHeight: 100,
+                      cacheWidth: 100,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "Pending Orders",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        
       ]),
     );
   }
