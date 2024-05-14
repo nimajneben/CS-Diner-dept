@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // logout button, redirect to login.dart
-import 'package:manju_restaurant/pages/login.dart';
+import 'package:manju_three/pages/login.dart';
 
 /* IDEA : 
 
@@ -25,7 +27,6 @@ Price:          [Input Field]
 .  [SAVE]         [CANCEL]
 
 */
-
 
 class EditMenuItemPage extends StatefulWidget {
   final DocumentSnapshot menuItem;
@@ -57,9 +58,12 @@ class _EditMenuItemPageState extends State<EditMenuItemPage> {
 
   Future<void> _pickImage() async {
     try {
-      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        final storageRef = FirebaseStorage.instance.ref().child('menuItems/${widget.menuItem.id}.jpg');
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('menuItems/${widget.menuItem.id}.jpg');
         await storageRef.putFile(File(pickedFile.path));
         final imageUrl = await storageRef.getDownloadURL();
         setState(() {
@@ -74,7 +78,7 @@ class _EditMenuItemPageState extends State<EditMenuItemPage> {
       _showErrorDialog(context, e.toString());
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +88,8 @@ class _EditMenuItemPageState extends State<EditMenuItemPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.redAccent,
-        title: const Text("Edit Menu Item", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Edit Menu Item",
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           IconButton(

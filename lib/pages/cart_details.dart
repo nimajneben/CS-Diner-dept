@@ -242,7 +242,7 @@ class _CartDetailsState extends State<CartDetails> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => CheckoutPage(subtotal: subtotal)));
+                    builder: (context) => CheckoutPage(subtotal: subtotal, vip:isVip )));
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text and icon color

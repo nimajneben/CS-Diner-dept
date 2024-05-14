@@ -21,6 +21,7 @@ class ApprovalPage extends StatelessWidget {
             Text(
               'Thank you for your registration!\nA staff member needs to activate your account.',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

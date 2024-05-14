@@ -20,135 +20,148 @@ ______________________________
 
 */
 
-
 class StaffProfilePage extends StatefulWidget {
-    final String staffId;
-    const StaffProfilePage({super.key, required this.staffId});
+  final String staffId;
+  const StaffProfilePage({super.key, required this.staffId});
 
-    @override
-    State<StaffProfilePage> createState() => _StaffProfilePageState();
+  @override
+  State<StaffProfilePage> createState() => _StaffProfilePageState();
 }
 
 class _StaffProfilePageState extends State<StaffProfilePage> {
-    // make sure 'admin' is logged in
-    Future<bool> _isAdmin() async {
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-            final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-            final role = userDoc.data()?['role'];
-            return role == 'admin';
-        }
-        return false;
+  // make sure 'admin' is logged in
+  Future<bool> _isAdmin() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      final role = userDoc.data()?['role'];
+      return role == 'admin';
     }
+    return false;
+  }
 
-    @override
-    Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+        future: _isAdmin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
+          if (!snapshot.hasData || !snapshot.data!) {
+            Future.microtask(() => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogIn()),
+                ));
+            return Container();
+          }
 
-        return FutureBuilder<bool>(
-            future: _isAdmin(),
-            builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Scaffold(body: Center(child: CircularProgressIndicator()));
-                }
-                if (!snapshot.hasData || !snapshot.data!) {
-                    Future.microtask(() =>
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LogIn()),
-                    )
-                    );
-                    return Container();
-                }
-
-    return Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
-            ),
-            backgroundColor: Colors.purple.shade100,
-            title: FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection('users').doc(widget.staffId).get(),
+              ),
+              backgroundColor: Colors.purple.shade100,
+              title: FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.staffId)
+                    .get(),
                 builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text("Loading...", style: AppWidget.boldTextFieldStyle());
-                    }
-                    if (!snapshot.hasData) {
-                        return Text("No Data", style: AppWidget.boldTextFieldStyle());
-                    }
-                    String staffName = snapshot.data!['name'];
-                    return Text(staffName, style: AppWidget.boldTextFieldStyle());
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text("Loading...",
+                        style: AppWidget.boldTextFieldStyle());
+                  }
+                  if (!snapshot.hasData) {
+                    return Text("No Data",
+                        style: AppWidget.boldTextFieldStyle());
+                  }
+                  String staffName = snapshot.data!['name'];
+                  return Text(staffName, style: AppWidget.boldTextFieldStyle());
                 },
-            ),
-            centerTitle: true,
-            actions: [
+              ),
+              centerTitle: true,
+              actions: [
                 IconButton(
-                    icon: Icon(Icons.logout_sharp, color: Colors.black, size: 30),
-                    onPressed: () {
+                  icon: Icon(Icons.logout_sharp, color: Colors.black, size: 30),
+                  onPressed: () {
                     Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LogIn()),
+                      context,
+                      MaterialPageRoute(builder: (context) => LogIn()),
                     );
-                    },
+                  },
                 ),
                 SizedBox(width: 20),
-            ],
-        ),
-
-        body: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('users').doc(widget.staffId).get(),
-            builder: (context, snapshot) {
+              ],
+            ),
+            body: FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(widget.staffId)
+                  .get(),
+              builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData) {
-                    return Center(child: Text('No staff data available'));
+                  return Center(child: Text('No staff data available'));
                 }
-                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                Map<String, dynamic> data =
+                    snapshot.data!.data() as Map<String, dynamic>;
                 return Center(
-                    child: Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        Column(
-                            children: data.entries.map((entry) {
-                                return Text('**${entry.key}** : ${entry.value}');
-                            }).toList(),
+                      Column(
+                        children: data.entries.map((entry) {
+                          return Text('**${entry.key}** : ${entry.value}');
+                        }).toList(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Confirm your action:'),
+                                content: Text(
+                                    'Are you sure you want to fire this employee?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(), //redaccent
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(widget.staffId)
+                                          .delete();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Yes, Fire'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Text('FIRE'),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(primary: Colors.redAccent),
-                                onPressed: () {
-                                    showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                        title: Text('Confirm your action:'),
-                                        content: Text('Are you sure you want to fire this employee?'),
-                                        actions: [
-                                            TextButton(
-                                                onPressed: () => Navigator.of(context).pop(),
-                                                child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                                style: TextButton.styleFrom(primary: Colors.redAccent),
-                                                onPressed: () {
-                                                FirebaseFirestore.instance.collection('users').doc(widget.staffId).delete();
-                                                Navigator.of(context).pop();
-                                                },
-                                                child: Text('Yes, Fire'),
-                                            ),
-                                        ],
-                                    ),
-                                    );
-                                },
-                                child: Text('FIRE'),
-                            ),
-                        ),
+                      ),
                     ],
-                    ),
+                  ),
                 );
-            },
-        ),
-    );
+              },
+            ),
+          );
+        });
   }
 }

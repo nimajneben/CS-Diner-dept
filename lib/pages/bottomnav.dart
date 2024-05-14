@@ -1,7 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:manju_three/methods/data.dart";
-import "package:manju_three/pages/profile.dart";
+import "package:manju_three/pages/profile_screen.dart";
 import "package:manju_three/pages/wallet.dart";
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
@@ -31,7 +31,7 @@ class _BottomNavState extends State<BottomNav> {
 
     homepage = Home();
     wallet = Wallet();
-    cartDetails =  CartDetails();
+    cartDetails = CartDetails();
     profile = Profile();
 
     pages = [homepage, cartDetails, wallet, profile];
