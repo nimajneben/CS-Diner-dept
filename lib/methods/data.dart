@@ -7,12 +7,10 @@ class DatabaseFunctions {
    * need to pass a map of the item data and the function will add it to the database
    * the pictures are stored in the firebase storage and the url is stored in the database
    */
-  Future addMemuItem(Map<String, dynamic> itemData) async {
-    return await FirebaseFirestore.instance
-        .collection("Menu")
-        .doc()
-        .set(itemData);
-  }
+  Future addMemuItem(Map<String, dynamic> itemData, String itemName) async {
+    return await FirebaseFirestore.instance.collection("Menu").doc(itemName)
+      .set(itemData);
+    }
 
 /**
  * 
