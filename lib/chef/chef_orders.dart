@@ -9,9 +9,8 @@ import 'package:manju_three/chef/chef_home.dart';
 //       >> 'SERVED' Button -- click after serving all items
 //       >> Firestore 'Orders' database :
 //                >> 'isOrderComplete' == true
-//                >> 'items' map -- itemName (string), price (number), quantity (number), 
+//                >> 'items' map -- itemName (string), price (number), quantity (number),
 //                                  chef (string), chefId (string), isReady (boolean)
-
 
 class Item {
   final String name;
@@ -19,7 +18,11 @@ class Item {
   final String chef;
   final bool isReady;
 
-  Item({required this.name, required this.quantity, required this.chef, required this.isReady});
+  Item(
+      {required this.name,
+      required this.quantity,
+      required this.chef,
+      required this.isReady});
 }
 
 class Order {
@@ -92,8 +95,10 @@ class OrdersPage extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              final chefItems = order.items.where((item) => item.chef == chefID).toList(); // TODO: Validate this @Juana?
-              
+              final chefItems = order.items
+                  .where((item) => item.chef == chefID)
+                  .toList(); // TODO: Validate this @Juana?
+
               return ListTile(
                 title: Text('Order ID: ${order.orderId}'),
                 subtitle: Column(
@@ -106,42 +111,45 @@ class OrdersPage extends StatelessWidget {
                 trailing: Column(
                   children: chefItems.map((item) {
                     return ElevatedButton(
-                    onPressed: () {
-                    FirebaseFirestore.instance
-                        .collection('Orders')
-                        .doc(order.orderId)
-                        .update({
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('Orders')
+                            .doc(order.orderId)
+                            .update({
                           'items.${item.name}.isReady': true,
-                        })
-                        .then((_) => {
-                              print('Item is served: ${item.name}');
-                              _checkOrderComplete(order);
-                        })
-                        .catchError(
-                            (error) => print('Error updating item: $error'));
-                    },
-                    child: Text('SERVED'),
-                );
-              }).toList(),
-            ),
+                        }).then((value) {
+                          print('Item is served: ${item.name}');
+                          _checkOrderComplete(order);
+                        });
+                        // .catchError(
+                        //     (error) => print('Error updating item: $error'));
+                      },
+                      child: Text('SERVED'),
+                    );
+                  }).toList(),
+                ),
+              );
+            },
           );
         },
-      );
-     },
-    ),
+      ),
+    );
   }
 
   void _checkOrderComplete(Order order) {
     final allItemsReady = order.items.every((item) => item.isReady);
     if (allItemsReady) {
-      FirebaseFirestore.instance.collection('Orders').doc(order.orderId).update({
-        'isOrderComplete': true,
-      })
-      .then((_) => print('Order is complete: ${order.orderId}'))
-      .catchError((error) => print('Error updating order: $error'));
+      FirebaseFirestore.instance
+          .collection('Orders')
+          .doc(order.orderId)
+          .update({
+            'isOrderComplete': true,
+          })
+          .then((_) => print('Order is complete: ${order.orderId}'))
+          .catchError((error) => print('Error updating order: $error'));
     }
   }
-      
+
   void _logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
