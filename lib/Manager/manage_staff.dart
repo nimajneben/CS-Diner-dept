@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:manju_three/Manager/view_to_fire.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/Manager/view_to_fire.dart';
 
@@ -38,10 +38,11 @@ ______________________________
 class ManageStaff extends StatelessWidget {
     // make sure it's 'admin' logged in & accessing the page
     Future<bool> _isAdmin() async {
-        User? user = FirebaseAuth.instance.currentUser;
+        final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-            DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-            return userDoc.exists && userDoc['role'] == 'admin';
+            final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+            final role = userDoc.data()?['role'];
+            return role == 'admin';
         }
         return false;
     }
