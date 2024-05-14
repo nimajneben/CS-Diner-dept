@@ -18,6 +18,7 @@ class _CustomerOrderState extends State<CustomerOrder> {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Orders')
         .where('customer', isEqualTo: customerId)
+        .orderBy('orderDate', descending: true) // Sort by orderDate in descending order
         .get();
 
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
@@ -56,13 +57,14 @@ class _CustomerOrderState extends State<CustomerOrder> {
         if (snapshot.data!.isEmpty) {
           return const Text('No orders found for this user.');
         }
+
         // Filter orders into active and completed
         List<Map<String, dynamic>> activeOrders = snapshot.data!.where((order) => order['isOrderComplete'] == false).toList();
         List<Map<String, dynamic>> completedOrders = snapshot.data!.where((order) => order['isOrderComplete'] == true).toList();
 
         return Column(
           children: [
-            ordersListSection("Active Orders", activeOrders ),
+            ordersListSection("Active Orders", activeOrders),
             ordersListSection("Completed Orders", completedOrders),
           ],
         );
@@ -100,7 +102,14 @@ class _CustomerOrderState extends State<CustomerOrder> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderDetails(orderId: order['orderId'], items: order['items'], isOrderComplete: order['isOrderComplete'],totalPrice: order['totalPrice'],),
+                      builder: (context) => OrderDetails(
+                        orderId: order['orderId'],
+                        items: order['items'] ,
+                        isOrderComplete: order['isOrderComplete'],
+                        totalPrice: order['totalPrice'],
+                        orderDate: order['orderDate'],
+                        checkoutMethod: order['checkoutMethod']
+                      ),
                     ),
                   );
                 },
