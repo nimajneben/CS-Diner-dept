@@ -29,10 +29,13 @@ class receipt extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text('Name: $name', style: TextStyle(fontSize: 20)),
-            Text('Date: ${date.day}/${date.month}/${date.year}', style: TextStyle(fontSize: 20)),
-            Text('Status: $address2', style: TextStyle(fontSize: 20)), // New field
+            Text('Date: ${date.day}/${date.month}/${date.year}',
+                style: TextStyle(fontSize: 20)),
+            Text('Status: $address2',
+                style: TextStyle(fontSize: 20)), // New field
             Text('Location: $location', style: TextStyle(fontSize: 20)),
-            Text('Address Complain To: $address', style: TextStyle(fontSize: 20)),
+            Text('Address Complain To: $address',
+                style: TextStyle(fontSize: 20)),
             Text('Description: $description', style: TextStyle(fontSize: 20)),
           ],
         ),
@@ -40,4 +43,3 @@ class receipt extends StatelessWidget {
     );
   }
 }
-

@@ -20,4 +20,8 @@ class AppWidget{
     return const TextStyle(color: Colors.black, fontSize: 20,
         fontWeight: FontWeight.bold);
   }
+  static TextStyle menuTextFieldStyle(){
+    return const TextStyle(color: Colors.black, fontSize: 16,
+        fontWeight: FontWeight.bold);
+  }
 }

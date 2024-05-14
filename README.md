@@ -1,6 +1,6 @@
-# manju_restaurant
+# manju_three
 
-A new Flutter project.
+MANJU Restaurant Management System
 
 ## Getting Started
 

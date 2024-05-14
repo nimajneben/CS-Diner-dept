@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "manju_restaurant" "\0"
+            VALUE "CompanyName", "edu.cuny.ccny.csc322.spring2024.m.manju" "\0"
+            VALUE "FileDescription", "manju_three" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "manju_restaurant" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "manju_restaurant.exe" "\0"
-            VALUE "ProductName", "manju_restaurant" "\0"
+            VALUE "InternalName", "manju_three" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 edu.cuny.ccny.csc322.spring2024.m.manju. All rights reserved." "\0"
+            VALUE "OriginalFilename", "manju_three.exe" "\0"
+            VALUE "ProductName", "manju_three" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

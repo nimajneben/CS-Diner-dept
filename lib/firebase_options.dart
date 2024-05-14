@@ -42,45 +42,50 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCg5LwQLKUkRwM2rsYuQkapZntLBHdDYOw',
-    appId: '1:981685586958:web:701ba5a228ceb06cd7805f',
+    appId: '1:981685586958:web:2818070b8b14ab2fd7805f',
     messagingSenderId: '981685586958',
     projectId: 'manju-cfa8e',
     authDomain: 'manju-cfa8e.firebaseapp.com',
+    databaseURL: 'https://manju-cfa8e-default-rtdb.firebaseio.com',
     storageBucket: 'manju-cfa8e.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCqIZ2TYCFDncqu_XT5Csz6SXgkk5JcY_4',
-    appId: '1:981685586958:android:44395b2bc8ef9219d7805f',
+    appId: '1:981685586958:android:d815ac274c4d4b63d7805f',
     messagingSenderId: '981685586958',
     projectId: 'manju-cfa8e',
+    databaseURL: 'https://manju-cfa8e-default-rtdb.firebaseio.com',
     storageBucket: 'manju-cfa8e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBKT9X2JLJzhzGsgly4wmIWd7kMkCtgETg',
-    appId: '1:981685586958:ios:274c6d0a45ea66f6d7805f',
+    appId: '1:981685586958:ios:d6ee06fecc4bf09cd7805f',
     messagingSenderId: '981685586958',
     projectId: 'manju-cfa8e',
+    databaseURL: 'https://manju-cfa8e-default-rtdb.firebaseio.com',
     storageBucket: 'manju-cfa8e.appspot.com',
-    iosBundleId: 'com.example.manjuRestaurant',
+    iosBundleId: 'edu.cuny.ccny.csc322.spring2024.m.manju.manjuThree',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBKT9X2JLJzhzGsgly4wmIWd7kMkCtgETg',
-    appId: '1:981685586958:ios:274c6d0a45ea66f6d7805f',
+    appId: '1:981685586958:ios:d6ee06fecc4bf09cd7805f',
     messagingSenderId: '981685586958',
     projectId: 'manju-cfa8e',
+    databaseURL: 'https://manju-cfa8e-default-rtdb.firebaseio.com',
     storageBucket: 'manju-cfa8e.appspot.com',
-    iosBundleId: 'com.example.manjuRestaurant',
+    iosBundleId: 'edu.cuny.ccny.csc322.spring2024.m.manju.manjuThree',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyCg5LwQLKUkRwM2rsYuQkapZntLBHdDYOw',
-    appId: '1:981685586958:web:2818070b8b14ab2fd7805f',
+    appId: '1:981685586958:web:0c50bbe4c8264ad5d7805f',
     messagingSenderId: '981685586958',
     projectId: 'manju-cfa8e',
     authDomain: 'manju-cfa8e.firebaseapp.com',
+    databaseURL: 'https://manju-cfa8e-default-rtdb.firebaseio.com',
     storageBucket: 'manju-cfa8e.appspot.com',
   );
 }

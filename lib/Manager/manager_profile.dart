@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/widget/widget_support.dart';
-import 'package:manju_restaurant/pages/signup.dart';
+import 'package:manju_three/widget/widget_support.dart';
+import 'package:manju_three/pages/signup.dart';
 
 class ManagerProfile extends StatefulWidget {
   const ManagerProfile({super.key});
@@ -28,8 +28,7 @@ class _ManagerProfileState extends State<ManagerProfile> {
               },
             ),
             SizedBox(width: 20),
-          ]
-      ),
+          ]),
       body: Center(
         child: Column(
           children: [
@@ -50,7 +49,10 @@ class _ManagerProfileState extends State<ManagerProfile> {
                     style: AppWidget.boldTextFieldStyle(),
                   ),
                   SizedBox(height: 10),
-                  Text("Email: managerjane@manju.com", style: AppWidget.semiBoldTextFieldStyle(),),
+                  Text(
+                    "Email: managerjane@manju.com",
+                    style: AppWidget.semiBoldTextFieldStyle(),
+                  ),
                 ],
               ),
             ),

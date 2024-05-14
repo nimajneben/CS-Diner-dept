@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manju_restaurant/Manager/manager_home.dart';
-import 'package:manju_restaurant/Manager/manager_profile.dart';
+import 'package:manju_three/Manager/manager_home.dart';
+import 'package:manju_three/Manager/manager_profile.dart';
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class ManagerNav extends StatefulWidget {
@@ -41,9 +41,15 @@ class _ManagerNavState extends State<ManagerNav> {
           });
         },
         items: [
-          Icon(Icons.dashboard, color: Colors.white,),
-          Icon(Icons.person, color: Colors.white,),
-
+          Icon(
+            Icons.dashboard,
+            color: Colors.white,
+          ), // Icon for the ManagerHome page
+          Icon(
+            Icons.person,
+            color: Colors.white,
+          ), // Icon for the ManagerProfile page
+          // Add more icons here when other pages are ready
         ],
       ),
       body: currentPage,
