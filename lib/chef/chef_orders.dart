@@ -92,7 +92,7 @@ class OrdersPage extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              final chefItems = order.items.where((item) => item.chefId == chefID).toList();
+              final chefItems = order.items.where((item) => item.chef == chefID).toList(); // TODO: Validate this @Juana?
               
               return ListTile(
                 title: Text('Order ID: ${order.orderId}'),
