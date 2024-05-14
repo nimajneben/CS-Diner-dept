@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/Manager/manager_approval.dart';
-import 'package:manju_three/Manager/manager_guilty.dart'; // Import the ManagerGuilty page
+import 'package:manju_three/Manager/manager_guilty.dart';
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({super.key});
@@ -41,7 +41,7 @@ class _ManagerHomeState extends State<ManagerHome> {
                       _buildGridItem('De-register customers', context),
                       _buildGridItem('Compliments', context),
                       _buildGridItem('Complaints',
-                          context), // This will now navigate to ManagerGuilty
+                          context),
                     ],
                   ),
                 ),
@@ -77,7 +77,6 @@ class _ManagerHomeState extends State<ManagerHome> {
             MaterialPageRoute(builder: (context) => ManagerApproval()),
           );
         } else if (title == 'Complaints') {
-          // Add this condition
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ManagerGuilty()),

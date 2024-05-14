@@ -20,9 +20,8 @@ class _ManagerNavState extends State<ManagerNav> {
   void initState() {
     super.initState();
     pages = [
-      ManagerHome(), // Set ManagerHome as the first page
-      ManagerProfile(), // Add ManagerProfile as the second page
-      // Add other pages here when they are ready
+      ManagerHome(),
+      ManagerProfile(),
       ManageStaff(),
     ];
     currentPage = pages[currentTabIndex];
@@ -46,13 +45,12 @@ class _ManagerNavState extends State<ManagerNav> {
           Icon(
             Icons.dashboard,
             color: Colors.white,
-          ), // Icon for the ManagerHome page
+          ),
           Icon(
             Icons.person,
             color: Colors.white,
-          ), // Icon for the ManagerProfile page
-          // Add more icons here when other pages are ready
-          Icon(Icons.group, color: Colors.white), // Manage Staff
+          ),
+          Icon(Icons.group, color: Colors.white),
         ],
       ),
       body: currentPage,

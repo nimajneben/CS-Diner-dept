@@ -17,7 +17,7 @@ class _ManagerStaffState extends State<ManagerStaff> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('staff')
-            .where('status', whereIn: ['Importer', 'Delivery', 'Chef']) // Add this line
+            .where('status', whereIn: ['Importer', 'Delivery', 'Chef'])
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

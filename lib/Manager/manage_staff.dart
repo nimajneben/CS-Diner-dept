@@ -36,7 +36,6 @@ ______________________________
 */
 
 class ManageStaff extends StatelessWidget {
-  // make sure it's 'admin' logged in & accessing the page
   Future<bool> _isAdmin() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -53,7 +52,6 @@ class ManageStaff extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-        // make sure user logged in is admin: _isAdmin function to check the user's role
         future: _isAdmin(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

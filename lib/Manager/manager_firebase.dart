@@ -16,7 +16,7 @@ class FirebaseManager {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) throw Exception("not logged in");
 
-    String collectionName = 'complaints'; // Set the collection name to 'complaints'
+    String collectionName = 'complaints';
 
     Map<String, dynamic> data = {
       'filersId': user.uid,
