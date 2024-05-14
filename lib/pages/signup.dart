@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
+import 'package:manju_three/pages/user_unapproved_page.dart';
+import 'package:manju_three/pages/bottomnav.dart';
 import 'package:manju_three/pages/user_info.dart';
-
 
 import '../widget/widget_support.dart';
 import 'login.dart';
@@ -21,12 +21,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  String name = "", email = "", password = "";
 
-String name = "", email ="", password = "";
-
-TextEditingController nameController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
 //global key for the form
   final _formKey = GlobalKey<FormState>();
@@ -91,233 +90,232 @@ TextEditingController passwordController = TextEditingController();
 //         'totalSpent': 0.0,
 //         'isVip': false,
 
-
 //       }
 //     );
-    
+
 // }
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        body:SingleChildScrollView(
-          child: Container(
-            child: Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height/1.2,
-                    width: MediaQuery.of(context).size.width,
-                    /*LinearGradient is a class that creates a gradient effect,
+    return Scaffold(
+        body: SingleChildScrollView(
+      child: Container(
+        child: Stack(children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 1.2,
+            width: MediaQuery.of(context).size.width,
+            /*LinearGradient is a class that creates a gradient effect,
                 we can use it to create a gradient effect for the container,
                 can take multiple colors, begin and end properties are used to
                 define the direction of the gradient effect
                  */
-                    decoration: BoxDecoration(gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Colors.blue, Colors.green])),
-                  ),
-                  Container(
-                    /*
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.blue, Colors.green])),
+          ),
+          Container(
+            /*
                 * MediaQuary is responsible for getting the size of the screen
                 * and then we can use it to set the margin of the container
                 * it also helps in making the app responsive.
                 *
                 * */
-                    margin:EdgeInsets.only(top:MediaQuery.of(context).size.height/3),
-                    height: MediaQuery.of(context).size.height/2,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        )
+            margin:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+            height: MediaQuery.of(context).size.height / 2,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+          ),
+
+          //need a logo or something nice for the login page
+          SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.only(top: 50, left: 30, right: 30),
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      "MANJU ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-          
-                  //need a logo or something nice for the login page
-                  SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 50, left: 30, right: 30),
-                      child: Column(
-                              
-                        children:
-                        [
-                              
-                          Center(
-                            child: Text("MANJU ",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                              
-                              
-                          /*if we want to add a logo, we can use the Image.asset() widget
+
+                  /*if we want to add a logo, we can use the Image.asset() widget
                       plus we need to adjust the size of the image and the space
                       between the image and the text
                               
                                      */
-                          SizedBox(height: 50,),
-                          Material(
-                            elevation: 10,
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              padding: EdgeInsets.only(left: 20, right: 20),
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height/1.5,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Material(
+                    elevation: 10,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Text(
+                              "Register",
+                              style: AppWidget.headLineTextFieldStyle(),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              controller: nameController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your name";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Name",
+                                hintStyle: AppWidget.semiBoldTextFieldStyle(),
+                                prefixIcon: Icon(Icons.person),
                               ),
-                              child:
-                              Form(
-                                key:_formKey,
-                                child: Column(
-                                  children:
-                                  [
-                                    SizedBox(height: 30,),
-                                    Text("Register",
-                                      style: AppWidget.headLineTextFieldStyle(),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(height: 30,),
-                                    TextFormField(
-                                      controller: nameController,
-                                      validator: (value){
-                                        if (value!.isEmpty){
-                                          return "Please enter your name";
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: "Name",
-                                        hintStyle: AppWidget.semiBoldTextFieldStyle(),
-                                        prefixIcon: Icon(Icons.person),
-                          
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              controller: emailController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your email";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Email",
+                                hintStyle: AppWidget.semiBoldTextFieldStyle(),
+                                prefixIcon: Icon(Icons.email),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              controller: passwordController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Please enter your password";
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                hintStyle: AppWidget.semiBoldTextFieldStyle(),
+                                prefixIcon: Icon(Icons.password),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    name = nameController.text;
+                                    email = emailController.text;
+                                    password = passwordController.text;
+                                  });
+                                  if (name.isNotEmpty &&
+                                      email.isNotEmpty &&
+                                      password.isNotEmpty) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SecondPage(
+                                                email: email,
+                                                name: name,
+                                                password: password)));
+                                  } else {
+                                    // Optionally show a snackbar if any field is still considered empty
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Please fill in all fields before proceeding."),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                  }
+                                }
+                              },
+                              child: Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [Colors.blue, Colors.green],
                                       ),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: const Center(
+                                    child: Text(
+                                      "Next",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 30,),
-                                    TextFormField(
-                                      controller: emailController,
-                                      validator: (value){
-                                        if (value!.isEmpty){
-                                          return "Please enter your email";
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: "Email",
-                                        hintStyle: AppWidget.semiBoldTextFieldStyle(),
-                                        prefixIcon: Icon(Icons.email),
-                          
-                                      ),
-                                    ),
-                          
-                                    SizedBox(height: 30,),
-                                    TextFormField(
-                                      controller: passwordController,
-                                      validator: (value){
-                                        if (value!.isEmpty){
-                                          return "Please enter your password";
-                                        }
-                                        return null;
-                                      },
-                                      obscureText: true,
-                                      decoration: InputDecoration(
-                                        hintText: "Password",
-                                        hintStyle: AppWidget.semiBoldTextFieldStyle(),
-                                        prefixIcon: Icon(Icons.password),
-                          
-                                      ),
-                                    ),
-                                    SizedBox(height: 30,),
-                          
-                          
-                                    SizedBox(height: 50,),
-                                    GestureDetector(
-                                      onTap: () {
-                                        if (_formKey.currentState!.validate()){
-                                          setState(() {
-                                            name = nameController.text;
-                                            email = emailController.text;
-                                            password = passwordController.text;
-                                          });
-                                           if(name.isNotEmpty && email.isNotEmpty && password.isNotEmpty){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SecondPage(email: email, name: name, password: password)));
-                                      }else {
-                                              // Optionally show a snackbar if any field is still considered empty
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                          content: Text("Please fill in all fields before proceeding."),
-                                              backgroundColor: Colors.red,
-                                         )
-                                       );
-                                      }
-                                          
-                                        }
-                                       
-                                      
-                                      
-                                      
-                                      },
-                                      child: Material(
-                                        elevation: 5,
-                                        borderRadius: BorderRadius.circular(30),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(vertical: 10),
-                                          width: 200,
-                                          decoration:  BoxDecoration(gradient: LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [Colors.blue, Colors.green],
-                                      
-                                          ),
-                                              borderRadius: BorderRadius.circular(30)),
-                                          child: const Center(
-                                            child: Text("Next",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                          
-                          
-                                  ],
+                                  ),
                                 ),
                               ),
-                                    
-                            ),
-                          ),
-                          SizedBox(height: 50,),
-                          GestureDetector(
-                            onTap:(){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                  LogIn()));
-                            },
-                            child: Text("Already have an account? Log In",
-                              style: AppWidget.semiBoldTextFieldStyle(),
-                            ),
-                          ),
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                ]
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LogIn()));
+                    },
+                    child: Text(
+                      "Already have an account? Log In",
+                      style: AppWidget.semiBoldTextFieldStyle(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        )
-    );
+          )
+        ]),
+      ),
+    ));
   }
 }

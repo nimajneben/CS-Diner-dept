@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:manju_three/Manager/view_to_fire.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/Manager/view_to_fire.dart';
 
@@ -38,10 +38,11 @@ ______________________________
 class ManageStaff extends StatelessWidget {
     // make sure it's 'admin' logged in & accessing the page
     Future<bool> _isAdmin() async {
-        User? user = FirebaseAuth.instance.currentUser;
+        final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-            DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-            return userDoc.exists && userDoc['role'] == 'admin';
+            final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+            final role = userDoc.data()?['role'];
+            return role == 'admin';
         }
         return false;
     }
@@ -100,7 +101,7 @@ class ManageStaff extends StatelessWidget {
             Map<String, List<DocumentSnapshot>> staffByRole = {
                 'chef': [],
                 'importer': [],
-                'deliverer': [],
+                'delivery': [],
             };
 
             for (var doc in staffDocs) {
@@ -115,7 +116,7 @@ class ManageStaff extends StatelessWidget {
                     children: entry.value.map((doc) {
                         return ListTile(
                             title: Text(doc['name']),
-                            subtitle: Text('ID: ${doc.id}\nCompliments: ${doc['compliments'] ?? 'N/A'}\nComplaints: ${doc['complaints'] ?? 'N/A'}\nWarnings: ${doc['warnings'] ?? 'N/A'}'),
+                            subtitle: Text('ID: ${doc.id}\nEmail: ${doc['email']}'),
                             trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -123,7 +124,7 @@ class ManageStaff extends StatelessWidget {
                                     onPressed: () {
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => ManagerProfile(doc: doc)),
+                                        MaterialPageRoute(builder: (context) => StaffProfilePage(staffId: doc.id)),
                                     );
                                     },
                                     child: Text('VIEW'),

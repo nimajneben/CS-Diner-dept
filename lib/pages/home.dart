@@ -5,6 +5,7 @@ import "package:flutter/material.dart%20";
 import "package:manju_three/methods/data.dart";
 
 import "../widget/widget_support.dart";
+import "cart_details.dart";
 import "food_details.dart";
 
 class Home extends StatefulWidget {
@@ -227,46 +228,85 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('MANJU'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
-        ],
-      ),
       body: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.only(top: 30.0, left: 20.0, bottom: 50),
+            margin: const EdgeInsets.only(top:30.0, left:20.0, bottom: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FutureBuilder<String>(
+                        future: fetchUserName(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Text("Loading...",
+                                style: AppWidget.boldTextFieldStyle());
+                          }
+                          if (snapshot.hasError) {
+                            return Text("Error: ${snapshot.error}",
+                                style: AppWidget.boldTextFieldStyle());
+                          }
+                          return Text("Hello ${snapshot.data}",
+                            style: AppWidget.boldTextFieldStyle(),
+                          );
+                        }
+                    ),
+
+                    ///Here is the Shopping Cart Icon
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CartDetails()));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                          padding: const EdgeInsets.all(3.0),
+                          decoration: BoxDecoration(
+                              color: Colors.black, borderRadius: BorderRadius.circular(10.0)
+                          ),
+                          child:const Icon(Icons.shopping_cart_checkout, size: 30.0, color: Colors.white),
+                        )
+                    ),
+                  ],
+                ),
                 SizedBox(height: 20.0),
-                Text(
-                  "Hello, [username]",
+                Text("MANJU",
                   style: AppWidget.headLineTextFieldStyle(),
                 ),
-                Text(
-                  "Delicious food for you to enjoy today!",
+                Text("Delicious food for you to enjoy",
                   style: AppWidget.lightTextFieldStyle(),
                 ),
                 SizedBox(height: 20.0),
                 Container(
-                    margin: EdgeInsets.only(right: 20.0), child: showItems()),
+                    margin: EdgeInsets.only(right: 20.0),
+                    child: showItems()),
                 SizedBox(height: 20.0),
 
-                Container(height: 200.0, child: allItems()),
+                Container(
+
+                    height: 200.0,
+                    child: allItems()),
 
                 SizedBox(height: 20.0),
 
                 //Here starts the list menu
                 Container(
-                    margin: EdgeInsets.only(bottom: 50),
+                    margin:EdgeInsets.only(bottom: 50),
                     height: 300.0,
                     child: allItemsVertical()),
+
               ],
-            )),
+
+
+            )
+        ),
       ),
     );
+
   }
+
+
 
   Widget showItems() {
     return Row(
