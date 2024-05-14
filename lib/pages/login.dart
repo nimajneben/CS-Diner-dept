@@ -59,33 +59,34 @@ class _LogInState extends State<LogIn> {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => ApprovalPage()));
           } else {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNav()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => BottomNav()));
           }
         }
       });
 
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNav()));
-    }   on FirebaseAuthException catch(e){
-      if (!mounted) return;  // Check here as well before showing the SnackBar
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return; // Check here as well before showing the SnackBar
       String errorMessage;
       switch (e.code) {
         case 'invalid-credential':
           errorMessage = 'Wrong email or password provided.';
           break;
         case 'user-disabled':
-          errorMessage = 'The user account has been disabled by an administrator.';
+          errorMessage =
+              'The user account has been disabled by an administrator.';
           break;
-        case 'invalid-email':  // Ensure this case matches exactly with FirebaseAuth's error codes
+        case 'invalid-email': // Ensure this case matches exactly with FirebaseAuth's error codes
           errorMessage = 'The email address is badly formatted.';
           break;
         default:
           errorMessage = 'An unexpected error occurred. Please try again.';
       }
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage),backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage), backgroundColor: Colors.red));
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +114,7 @@ class _LogInState extends State<LogIn> {
               * it also helps in making the app responsive.
               *
               * */
-          margin:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
           height: MediaQuery.of(context).size.height / 2,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(

@@ -67,23 +67,23 @@ class _WalletState extends State<Wallet> {
         SizedBox(
           height: 50,
         ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          padding: EdgeInsets.symmetric(vertical: 12),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color(0xFF008080)),
-          child: Center(
-            child: Text(
-              "Add Money",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
+        // Container(
+        //   margin: EdgeInsets.symmetric(horizontal: 20),
+        //   padding: EdgeInsets.symmetric(vertical: 12),
+        //   width: MediaQuery.of(context).size.width,
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       color: Color(0xFF008080)),
+        //   child: Center(
+        //     child: Text(
+        //       "Add Money",
+        //       style: TextStyle(
+        //           color: Colors.white,
+        //           fontSize: 20,
+        //           fontWeight: FontWeight.bold),
+        //     ),
+        //   ),
+        // ),
       ]),
     );
   }
@@ -176,15 +176,22 @@ class WalletBalanceView extends StatefulWidget {
   State<StatefulWidget> createState() => _WalletBalanceView();
 }
 
-class _WalletBalanceView extends State<WalletBalanceView> {
-  SyncWalletModel wallet = SyncWalletModel(uid);
+SyncWalletModel wallet = SyncWalletModel(uid);
 
+class _WalletBalanceView extends State<WalletBalanceView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     // throw UnimplementedError();
     double balance = wallet.balance / 100.0;
     // TODO: Format Currency Properly
-    return Text("uninmplemented");
+    return Text('\$$balance');
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   double balance = wallet.balance / 100.0;
+  //   return Consumer<WalletModel>(
+  //       builder: ((context, _, child) => Text('\$$balance')));
+  // }
 }
