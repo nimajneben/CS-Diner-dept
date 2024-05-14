@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manju_three/Manager/manager_complaints.dart';
 import 'package:manju_three/delivery/delivery_orders.dart';
 import 'package:manju_three/pages/surfer_home.dart';
 import 'package:manju_three/Importer/complaints_screen.dart';
@@ -91,11 +92,19 @@ class _DeliveryMainScreenState extends State<DeliveryMainScreen> {
                           MaterialPageRoute(
                               builder: (context) => const ComplaintScreen()));
                     }),
-                const Card(
-                    child: SizedBox(
-                        width: cardWidth,
-                        height: cardHeight,
-                        child: Center(child: Text('Complaint Form')))),
+                InkWell(
+                  child: const Card(
+                      child: SizedBox(
+                          width: cardWidth,
+                          height: cardHeight,
+                          child: Center(child: Text('Complaint Form')))),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ManagerComplaints()));
+                  },
+                ),
                 const Card(
                     child: SizedBox(
                         width: cardWidth,
