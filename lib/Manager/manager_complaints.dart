@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manju_three/Manager/manager_firebase.dart';
 import 'receipt.dart';
 
+
 class ManagerComplaints extends StatefulWidget {
   const ManagerComplaints({super.key});
 
@@ -96,7 +97,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                         ),
                       ),
                       initialValue:
-                      '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                      '${_selectedDate.month}/${_selectedDate.day}/${_selectedDate.year}',
                     ),
                   ),
                 ),

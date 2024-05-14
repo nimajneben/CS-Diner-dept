@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class FirebaseManager {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   Future<void> addComplaint({
     required String name,
     required DateTime date,
@@ -16,7 +14,7 @@ class FirebaseManager {
     required String accuseName,
   }) async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) throw Exception("not logged in");
 
     String collectionName = 'complaints'; // Set the collection name to 'complaints'
 
@@ -24,7 +22,7 @@ class FirebaseManager {
       'filersId': user.uid,
       'timestamp': Timestamp.now(),
       'name': name,
-      'date': Timestamp.fromDate(date), // Convert DateTime to Timestamp
+      'date': date,
       'location': location,
       'address': address,
       'status': status,
@@ -37,9 +35,6 @@ class FirebaseManager {
       'subject': "what the user is complaining about-- could be an order id, menu id, procurement id, etc."
     };
 
-    await FirebaseFirestore.instance.collection(collectionName).add(data).then((documentSnapshot) =>
-        print("Added Data with ID: ${documentSnapshot.id}")); // Add .then callback here
+    await FirebaseFirestore.instance.collection(collectionName).add(data);
   }
 }
-
-
