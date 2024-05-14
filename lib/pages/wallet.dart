@@ -185,7 +185,7 @@ class _WalletBalanceView extends State<WalletBalanceView> {
     // throw UnimplementedError();
     double balance = wallet.balance / 100.0;
     // TODO: Format Currency Properly
-    return Text('\$$balance');
+    return Text('\$${balance.toStringAsFixed(2)}');
   }
 
   // @override
