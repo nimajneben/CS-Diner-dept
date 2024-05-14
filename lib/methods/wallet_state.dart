@@ -42,10 +42,10 @@ class SyncWallet {
     documentReference.get().then((DocumentSnapshot doc) {
       if (doc.exists) {
         final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        if (data.containsKey("deposit")) {
-          balance = int.parse(data["deposit"].toString());
+        if (data.containsKey("wallet")) {
+          balance = int.parse(data["wallet"].toString());
         } else {
-          // Initalize balance if user doesn't have a deposit
+          // Initalize balance if user doesn't have a wallet
           balance = 0;
         }
       } else {
@@ -57,7 +57,7 @@ class SyncWallet {
   // Publish new balance to Firestore
   void updateAmount() {
     documentReference = database.collection("users").doc(uid);
-    documentReference.update({'deposit': balance}).then(
+    documentReference.update({'wallet': balance}).then(
         (value) => debugPrint("Balance Updated Successfully"),
         onerror: (e) => debugPrint("Balance failed to update: $e"));
   }
