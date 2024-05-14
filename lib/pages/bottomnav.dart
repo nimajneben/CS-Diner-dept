@@ -1,6 +1,4 @@
-import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
-import "package:manju_three/methods/data.dart";
 import "package:manju_three/pages/profile_screen.dart";
 import "package:manju_three/pages/wallet.dart";
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
@@ -29,10 +27,10 @@ class _BottomNavState extends State<BottomNav> {
   void initState() {
     // TODO: implement initState
 
-    homepage = Home();
-    wallet = Wallet();
-    cartDetails = CartDetails();
-    profile = Profile();
+    homepage = const Home();
+    wallet = const Wallet();
+    cartDetails = const CartDetails();
+    profile = const Profile();
 
     pages = [homepage, cartDetails, wallet, profile];
     super.initState();
@@ -45,13 +43,13 @@ class _BottomNavState extends State<BottomNav> {
         height: 65,
         backgroundColor: Colors.white,
         color: Colors.black,
-        animationDuration: Duration(milliseconds: 200),
+        animationDuration: const Duration(milliseconds: 200),
         onTap: (int index) {
           setState(() {
             currentTabIndex = index;
           });
         },
-        items: [
+        items: const [
           Icon(
             Icons.home_outlined,
             color: Colors.white,
