@@ -8,9 +8,10 @@ import 'package:manju_three/chef/chef_bottomnav.dart';
 import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/pages/user_unapproved_page.dart';
 import 'package:manju_three/pages/bottomnav.dart';
-import 'package:manju_three/pages/signup.dart';
+import 'package:manju_three/pages/user_registration.dart';
 import 'package:manju_three/pages/surfer_home.dart';
 import 'package:manju_three/Importer/importer_menu.dart';
+import 'package:manju_three/delivery/delivery_menu.dart';
 
 import '../widget/widget_support.dart';
 
@@ -53,6 +54,11 @@ class _LogInState extends State<LogIn> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: ((context) => ImporterMainScreen())),
+              (route) => false);
+        } else if (value == "delivery") {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: ((context) => DeliveryMainScreen())),
               (route) => false);
         } else {
           if (isApproved == false) {
