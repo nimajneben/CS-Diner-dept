@@ -15,13 +15,13 @@ import 'package:manju_three/chef/chef_home.dart';
 class Item {
   final String name;
   final int quantity;
-  final String chef;
+  final String chefId;
   final bool isReady;
 
   Item(
       {required this.name,
       required this.quantity,
-      required this.chef,
+      required this.chefId,
       required this.isReady});
 }
 
@@ -82,7 +82,7 @@ class OrdersPage extends StatelessWidget {
               return Item(
                   name: entry.value['itemName'],
                   quantity: entry.value['quantity'],
-                  chef: entry.value['chef'],
+                  chefId: entry.value['chefId'],
                   isReady: entry.value['isReady']);
             }).toList();
             return Order(
@@ -96,8 +96,8 @@ class OrdersPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = orders[index];
               final chefItems = order.items
-                  .where((item) => item.chef == chefID)
-                  .toList(); // TODO: Validate this @Juana?
+                  .where((item) => item.chefId == chefID)
+                  .toList(); // WANT: list of items in the order assigned to chef by 'chefId'
 
               return ListTile(
                 title: Text('Order ID: ${order.orderId}'),
