@@ -105,7 +105,7 @@ class DatabaseFunctions {
  * 
 */
 
-  Future<dynamic> getApprovalInfo(String uid) async {
+  Future<bool> getApprovalInfo(String uid) async {
     return await FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
@@ -166,14 +166,17 @@ class DatabaseFunctions {
 
     return transactionResponse;
   }
-
-
 }
+
 Future<String> fetchUserName() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
-    DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-    return userData['name']; // Assuming 'name' is the field that stores user names.
+    DocumentSnapshot userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    return userData[
+        'name']; // Assuming 'name' is the field that stores user names.
   }
   return 'No Name'; // Default or error value
 }
