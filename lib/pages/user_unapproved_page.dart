@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:manju_three/pages/surfer_home.dart';
 
 class ApprovalPage extends StatelessWidget {
-  const ApprovalPage({super.key});
+  const ApprovalPage({super.key});   
 
   @override
   Widget build(BuildContext context) {
