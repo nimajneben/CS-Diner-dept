@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-
-// logout button, redirect to login.dart
 import 'package:manju_three/pages/login.dart';
 
 // CHEFS MANUALLY UPDATE INGREDIENTS
@@ -12,40 +8,14 @@ import 'package:manju_three/pages/login.dart';
 //       >> Integer Input & 'GET' Button
 //       >> Firestore 'Ingredients' database :
 //                >> 'amount' increases by integer value
-//                >> 'needRestock' == true, if false
-
-/* IDEA : 
-
-<<   Ingredients Inventory   [LOGOUT]
-____________________________________
-
-ID: (Ingredient1)
-Amount: (15)
-Need Restock: (true)
-Input Field: [ int ]   [GET]
-
-ID: (Ingredient2)
-Amount: (3)
-Need Restock: (false)
-Input Field: [ int ]   [GET]
-
-ID: (Ingredient3)
-Amount: (23)
-Need Restock: (true)
-Input Field: [ int ]   [GET]
-
-... [ cont'd list of ingredients    ]
-... [ from 'Ingredients' collection ]
-
-*/
+//                >> 'needRestock' == true if 'amount' < 10
 
 class ChefIngredient {
   final String id;
   final int amount;
   final bool needRestock;
 
-  ChefIngredient(
-      {required this.id, required this.amount, required this.needRestock});
+  ChefIngredient({required this.id, required this.amount, required this.needRestock});
 
   factory ChefIngredient.fromDocument(DocumentSnapshot doc) {
     return ChefIngredient(
@@ -56,41 +26,23 @@ class ChefIngredient {
   }
 }
 
-class IngredientModel extends ChangeNotifier {
-  int _inputValue = 0;
-
-  int get inputValue => _inputValue;
-
-  void updateInputValue(int newValue) {
-    _inputValue = newValue;
-    notifyListeners();
-  }
+class ChefIngredientsPage extends StatefulWidget {
+  @override
+    _ChefIngredientsPageState createState() => _ChefIngredientsPageState();
 }
 
-class ChefIngredientsPage extends StatelessWidget {
+class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
+  int _inputValue = 0;
+  void updateInputValue(String value) {
+    setState(() {
+      _inputValue = int.tryParse(value) ?? 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ingredientModel = context.watch<IngredientModel>();
     final user = FirebaseAuth.instance.currentUser;
-
-    // // redirect to login page if user isn't a chef?
-    // return FutureBuilder<DocumentSnapshot>(
-    //   future:
-    //       FirebaseFirestore.instance.collection('users').doc(user?.uid).get(),
-    //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Center(child: CircularProgressIndicator());
-    //     }
-    //     if (!snapshot.hasData || snapshot.data?.data()?['role'] != 'chef') {
-    //       WidgetsBinding.instance.addPostFrameCallback((_) {
-    //         Navigator.pushReplacement(
-    //           context,
-    //           MaterialPageRoute(builder: (context) => LogIn()),
-    //         );
-    //       });
-    //       return Container();
-    //     }
-
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -98,7 +50,7 @@ class ChefIngredientsPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.redAccent,
-        title: Text("Ingredients Inventory",
+        title: Text("Request Ingredients",
             style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
@@ -144,24 +96,18 @@ class ChefIngredientsPage extends StatelessWidget {
                   children: [
                     TextField(
                       keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        final parsedValue = int.tryParse(value) ?? 0;
-                        ingredientModel.updateInputValue(parsedValue);
-                      },
+                      onChanged: (value) => updateInputValue(value),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        final inputValue = ingredientModel.inputValue;
                         FirebaseFirestore.instance
                             .collection('Ingredients')
                             .doc(ingredient.id)
                             .update({
-                              'amount': FieldValue.increment(inputValue),
-                              'needRestock': (ingredient.amount + inputValue) <
-                                  10, // true if new amount < 10
+                              'amount': FieldValue.increment(_inputValue),
+                              'needRestock': (ingredient.amount + _inputValue) < 10, // true if new amount < 10
                             })
-                            .then(
-                                (_) => print('Inventory updated successfully'))
+                            .then((_) => print('Inventory updated successfully'))
                             .catchError((error) =>
                                 print('Error updating inventory: $error'));
                       },
