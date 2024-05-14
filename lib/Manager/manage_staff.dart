@@ -101,7 +101,7 @@ class ManageStaff extends StatelessWidget {
             Map<String, List<DocumentSnapshot>> staffByRole = {
                 'chef': [],
                 'importer': [],
-                'deliverer': [],
+                'delivery': [],
             };
 
             for (var doc in staffDocs) {
