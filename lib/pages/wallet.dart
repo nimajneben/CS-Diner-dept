@@ -98,6 +98,7 @@ class WalletManagementButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         GestureDetector(
+          onTap: () => {wallet.addBalance(10.00)},
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -114,7 +115,7 @@ class WalletManagementButtons extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => {},
+          onTap: () => {wallet.addBalance(20.00)},
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -131,6 +132,7 @@ class WalletManagementButtons extends StatelessWidget {
           ),
         ),
         GestureDetector(
+          onTap: () => {wallet.addBalance(50.00)},
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -147,6 +149,7 @@ class WalletManagementButtons extends StatelessWidget {
           ),
         ),
         GestureDetector(
+          onTap: () => {wallet.addBalance(100.00)},
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
