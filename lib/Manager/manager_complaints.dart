@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:manju_three/Manager/manager_firebase.dart';
 import 'receipt.dart';
+
 
 class ManagerComplaints extends StatefulWidget {
   const ManagerComplaints({super.key});
@@ -17,12 +19,14 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
   final _nameController = TextEditingController();
   final _locationController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _anotherNameController = TextEditingController(); // New TextEditingController
 
   @override
   void dispose() {
     _nameController.dispose();
     _locationController.dispose();
     _descriptionController.dispose();
+    _anotherNameController.dispose(); // Dispose the new controller
     super.dispose();
   }
 
@@ -38,7 +42,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
         _selectedDate = picked;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-              'Selected: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
+              'Selected: ${_selectedDate.month}/${_selectedDate.day}/${_selectedDate.year}'),
         ));
       });
   }
@@ -93,7 +97,7 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                         ),
                       ),
                       initialValue:
-                          '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                      '${_selectedDate.month}/${_selectedDate.day}/${_selectedDate.year}',
                     ),
                   ),
                 ),
@@ -137,6 +141,29 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
                 'Complain Information',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 20, right: 20),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Color(0xff1D1617).withOpacity(0.11),
+                      blurRadius: 40,
+                      spreadRadius: 0.0)
+                ]),
+                child: TextFormField(
+                  controller: _anotherNameController, // Use the new controller
+                  decoration: InputDecoration(
+                    labelText: 'Name ', // Label for the new text field
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.all(15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
               Container(
                 margin: EdgeInsets.only(
                     top: 10, left: 20, right: 20), // Adjust the top margin here
@@ -222,29 +249,40 @@ class _ManagerComplaintsState extends State<ManagerComplaints> {
               Container(
                 height: 60,
                 margin:
-                    EdgeInsets.only(top: 5, left: 20, right: 20, bottom: 10),
+                EdgeInsets.only(top: 5, left: 20, right: 20, bottom: 10),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_nameController.text.isEmpty ||
                         _locationController.text.isEmpty ||
                         _descriptionController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Please fill in all the fields')),
+                        SnackBar(content: Text('Please fill in all the fields')),
                       );
                     } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => receipt(
-                                  name: _nameController.text,
-                                  date: _selectedDate,
-                                  location: _locationController.text,
-                                  address: _selectedAddress,
-                                  address2: _selectedAddress2,
-                                  description: _descriptionController.text,
-                                )),
-                      );
+                      FirebaseManager().addComplaint(
+                        name: _nameController.text,
+                        date: _selectedDate,
+                        location: _locationController.text,
+                        address: _selectedAddress,
+                        status: _selectedAddress2,
+                        description: _descriptionController.text,
+                        accuseName: _anotherNameController.text,
+                      ).then((value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Receipt(
+                              name: _nameController.text,
+                              date: _selectedDate,
+                              location: _locationController.text,
+                              address: _selectedAddress,
+                              address2: _selectedAddress2,
+                              description: _descriptionController.text,
+                              accuseName: _anotherNameController.text,
+                            ),
+                          ),
+                        );
+                      }).catchError((error) => print("Failed to add complaint: $error"));
                     }
                   },
                   child: Text('Submit', style: TextStyle(fontSize: 20)),

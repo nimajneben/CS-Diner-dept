@@ -14,14 +14,18 @@ class CustomerOrder extends StatefulWidget {
 class _CustomerOrderState extends State<CustomerOrder> {
   final User? user = FirebaseAuth.instance.currentUser;
 
-  Future<List<Map<String, dynamic>>> fetchOrdersByCustomer(String customerId) async {
+  Future<List<Map<String, dynamic>>> fetchOrdersByCustomer(
+      String customerId) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Orders')
         .where('customer', isEqualTo: customerId)
-        .orderBy('orderDate', descending: true) // Sort by orderDate in descending order
+        .orderBy('orderDate',
+            descending: true) // Sort by orderDate in descending order
         .get();
 
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
   }
 
   @override
@@ -34,9 +38,12 @@ class _CustomerOrderState extends State<CustomerOrder> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Text("Your Orders", style: AppWidget.headLineTextFieldStyle()),
+                child: Text("Your Orders",
+                    style: AppWidget.headLineTextFieldStyle()),
               ),
-              user != null ? buildUserOrders(context, user!.uid) : const Text("Please log in to view orders."),
+              user != null
+                  ? buildUserOrders(context, user!.uid)
+                  : const Text("Please log in to view orders."),
             ],
           ),
         ),
@@ -59,8 +66,12 @@ class _CustomerOrderState extends State<CustomerOrder> {
         }
 
         // Filter orders into active and completed
-        List<Map<String, dynamic>> activeOrders = snapshot.data!.where((order) => order['isOrderComplete'] == false).toList();
-        List<Map<String, dynamic>> completedOrders = snapshot.data!.where((order) => order['isOrderComplete'] == true).toList();
+        List<Map<String, dynamic>> activeOrders = snapshot.data!
+            .where((order) => order['isOrderComplete'] == false)
+            .toList();
+        List<Map<String, dynamic>> completedOrders = snapshot.data!
+            .where((order) => order['isOrderComplete'] == true)
+            .toList();
 
         return Column(
           children: [
@@ -76,7 +87,8 @@ class _CustomerOrderState extends State<CustomerOrder> {
     if (orders.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Text('$title: None', style: const TextStyle(fontStyle: FontStyle.italic)),
+        child: Text('$title: None',
+            style: const TextStyle(fontStyle: FontStyle.italic)),
       );
     }
 
@@ -85,7 +97,9 @@ class _CustomerOrderState extends State<CustomerOrder> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          child: Text(title,
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ),
         ListView.builder(
           shrinkWrap: true,
@@ -95,7 +109,8 @@ class _CustomerOrderState extends State<CustomerOrder> {
             var order = orders[index];
             return ListTile(
               title: Text("Order ID: ${order['orderId']}"),
-              subtitle: Text('Total: \$${order['totalPrice'].toStringAsFixed(2)}'),
+              subtitle:
+                  Text('Total: \$${order['totalPrice'].toStringAsFixed(2)}'),
               trailing: IconButton(
                 icon: const Icon(Icons.visibility),
                 onPressed: () {
@@ -104,12 +119,11 @@ class _CustomerOrderState extends State<CustomerOrder> {
                     MaterialPageRoute(
                       builder: (context) => OrderDetails(
                           orderId: order['orderId'],
-                          items: order['items'] ,
+                          items: order['items'],
                           isOrderComplete: order['isOrderComplete'],
                           totalPrice: order['totalPrice'],
                           orderDate: order['orderDate'],
-                          checkoutMethod: order['checkoutMethod']
-                      ),
+                          checkoutMethod: order['checkoutMethod']),
                     ),
                   );
                 },

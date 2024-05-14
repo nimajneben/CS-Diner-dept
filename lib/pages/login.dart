@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart%20';
+import 'package:manju_three/Manager/manager_bottomnav.dart';
+import 'package:manju_three/Manager/manager_home.dart';
 import 'package:manju_three/admin/admin_nav.dart';
 import 'package:manju_three/chef/chef_bottomnav.dart';
 import 'package:manju_three/methods/data.dart';
@@ -37,8 +39,6 @@ class _LogInState extends State<LogIn> {
           .signInWithEmailAndPassword(email: email, password: password);
       Future<String> role = DatabaseFunctions()
           .getUserRole(FirebaseAuth.instance.currentUser!.uid);
-      bool isApproved = await DatabaseFunctions()
-          .getApprovalInfo(FirebaseAuth.instance.currentUser!.uid);
       role.then((value) {
         if (value == "chef") {
           Navigator.pushAndRemoveUntil(
@@ -48,7 +48,7 @@ class _LogInState extends State<LogIn> {
         } else if (value == "admin") {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => AdminNav()),
+              MaterialPageRoute(builder: (context) => ManagerNav()),
               (route) => false);
         } else if (value == "importer") {
           Navigator.pushAndRemoveUntil(
@@ -61,6 +61,8 @@ class _LogInState extends State<LogIn> {
               MaterialPageRoute(builder: ((context) => DeliveryMainScreen())),
               (route) => false);
         } else {
+          Future<bool> isApproved = DatabaseFunctions()
+              .getApprovalInfo(FirebaseAuth.instance.currentUser!.uid);
           if (isApproved == false) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => ApprovalPage()));

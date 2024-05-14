@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import "package:manju_three/review/add_ratings.dart";
@@ -8,15 +7,22 @@ class OrderDetails extends StatefulWidget {
   final List items;
   final bool isOrderComplete;
   final double totalPrice;
-  final Map<String,dynamic> checkoutMethod;
+  final Map<String, dynamic> checkoutMethod;
   final Timestamp orderDate;
 
   const OrderDetails(
-      {super.key, required this.orderId, required this.items, required this.isOrderComplete, required this.totalPrice, required this.checkoutMethod, required this.orderDate});
+      {super.key,
+      required this.orderId,
+      required this.items,
+      required this.isOrderComplete,
+      required this.totalPrice,
+      required this.checkoutMethod,
+      required this.orderDate});
 
   @override
-  _OrderDetailsState  createState() => _OrderDetailsState();
+  _OrderDetailsState createState() => _OrderDetailsState();
 }
+
 class _OrderDetailsState extends State<OrderDetails> {
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    widget.isOrderComplete ? Icons.check_circle : Icons.hourglass_empty,
+                    widget.isOrderComplete
+                        ? Icons.check_circle
+                        : Icons.hourglass_empty,
                     color: widget.isOrderComplete ? Colors.green : Colors.grey,
                     size: 24,
                   ),
@@ -44,7 +52,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: widget.isOrderComplete ? Colors.green : Colors.grey,
+                      color:
+                          widget.isOrderComplete ? Colors.green : Colors.grey,
                     ),
                   ),
                 ],
@@ -60,18 +69,21 @@ class _OrderDetailsState extends State<OrderDetails> {
                 return ListTile(
                   title: Text(item['itemName']),
                   subtitle: Text('Quantity: ${item['quantity']}'),
-                  trailing: Text('\$${(item['price'] as double).toStringAsFixed(2)}', style: const TextStyle(fontSize: 20)),
+                  trailing: Text(
+                      '\$${(item['price'] as double).toStringAsFixed(2)}',
+                      style: const TextStyle(fontSize: 20)),
                 );
               },
             ),
-
             const Divider(),
             buildCheckoutMethodDetails(widget.checkoutMethod),
             const Divider(),
-            if (widget.isOrderComplete) buildReviewButtons(widget.checkoutMethod),
+            if (widget.isOrderComplete)
+              buildReviewButtons(widget.checkoutMethod),
             const Divider(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -101,9 +113,12 @@ class _OrderDetailsState extends State<OrderDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Method: $method', style: const TextStyle(fontSize: 16)),
-              Text('Date: ${checkoutMethod['date']}', style: const TextStyle(fontSize: 16)),
-              Text('Time: ${checkoutMethod['time']}', style: const TextStyle(fontSize: 16)),
-              Text('Number of People: ${checkoutMethod['numberOfPeople']}', style: const TextStyle(fontSize: 16)),
+              Text('Date: ${checkoutMethod['date']}',
+                  style: const TextStyle(fontSize: 16)),
+              Text('Time: ${checkoutMethod['time']}',
+                  style: const TextStyle(fontSize: 16)),
+              Text('Number of People: ${checkoutMethod['numberOfPeople']}',
+                  style: const TextStyle(fontSize: 16)),
             ],
           ),
         );
@@ -114,8 +129,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Method: $method', style: const TextStyle(fontSize: 16)),
-              Text('Date: ${checkoutMethod['date']}', style: const TextStyle(fontSize: 16)),
-              Text('Time: ${checkoutMethod['time']}', style: const TextStyle(fontSize: 16)),
+              Text('Date: ${checkoutMethod['date']}',
+                  style: const TextStyle(fontSize: 16)),
+              Text('Time: ${checkoutMethod['time']}',
+                  style: const TextStyle(fontSize: 16)),
             ],
           ),
         );
@@ -126,14 +143,17 @@ class _OrderDetailsState extends State<OrderDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Method: $method', style: const TextStyle(fontSize: 16)),
-              Text('Address: ${checkoutMethod['address']}', style: const TextStyle(fontSize: 16)),
+              Text('Address: ${checkoutMethod['address']}',
+                  style: const TextStyle(fontSize: 16)),
             ],
           ),
         );
       default:
-        return const SizedBox.shrink(); // Return an empty widget if no method matches
+        return const SizedBox
+            .shrink(); // Return an empty widget if no method matches
     }
   }
+
   Widget buildReviewButtons(Map<String, dynamic> checkoutMethod) {
     String method = checkoutMethod['method'];
     bool isDelivery = method == 'Delivery';
@@ -148,19 +168,31 @@ class _OrderDetailsState extends State<OrderDetails> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddRatings(checkoutMethod:widget.checkoutMethod , items: widget.items,deliverer: false,)));
+                      builder: (context) => AddRatings(
+                            checkoutMethod: widget.checkoutMethod,
+                            items: widget.items,
+                            deliverer: false,
+                          )));
             },
             child: const Text("Chef Review"),
           ),
           ElevatedButton(
-            onPressed: isDelivery ? () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddRatings(checkoutMethod:widget.checkoutMethod , items: widget.items,deliverer: true,)));
-            } : null,
+            onPressed: isDelivery
+                ? () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddRatings(
+                                  checkoutMethod: widget.checkoutMethod,
+                                  items: widget.items,
+                                  deliverer: true,
+                                )));
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
-              disabledForegroundColor: Colors.grey.withOpacity(0.38), disabledBackgroundColor: Colors.grey.withOpacity(0.12), // Disabled button color
+              disabledForegroundColor: Colors.grey.withOpacity(0.38),
+              disabledBackgroundColor:
+                  Colors.grey.withOpacity(0.12), // Disabled button color
             ),
             child: const Text("Delivery Review"),
           ),

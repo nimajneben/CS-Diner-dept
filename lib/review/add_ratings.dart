@@ -23,7 +23,8 @@ class AddRatings extends StatefulWidget {
 
 class _AddRatingsState extends State<AddRatings> {
   late List<TextEditingController> _reviewControllers;
-  final TextEditingController _complaintDescriptionController = TextEditingController();
+  final TextEditingController _complaintDescriptionController =
+      TextEditingController();
   String feedbackType = 'compliment';
   String? selectedChefId;
   String? selectedChefName;
@@ -31,7 +32,8 @@ class _AddRatingsState extends State<AddRatings> {
   @override
   void initState() {
     super.initState();
-    _reviewControllers = List.generate(widget.items.length, (index) => TextEditingController());
+    _reviewControllers =
+        List.generate(widget.items.length, (index) => TextEditingController());
   }
 
   @override
@@ -47,14 +49,19 @@ class _AddRatingsState extends State<AddRatings> {
   List<Map<String, String>> getUniqueChefs() {
     Map<String, String> chefs = {};
     for (var item in widget.items) {
-      if (item is Map<String, dynamic> && item.containsKey('chefId') && item.containsKey('chef')) {
+      if (item is Map<String, dynamic> &&
+          item.containsKey('chefId') &&
+          item.containsKey('chef')) {
         chefs[item['chefId']] = item['chef'];
       }
     }
-    return chefs.entries.map((e) => {'chefId': e.key, 'chefName': e.value}).toList();
+    return chefs.entries
+        .map((e) => {'chefId': e.key, 'chefName': e.value})
+        .toList();
   }
 
-  Future<void> addItemRating(String itemName, double rating, String review) async {
+  Future<void> addItemRating(
+      String itemName, double rating, String review) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -68,7 +75,8 @@ class _AddRatingsState extends State<AddRatings> {
     await FirebaseFirestore.instance.collection('Reviews').add(ratingData);
 
     // Update the item rating in the menu collection
-    DocumentReference itemRef = FirebaseFirestore.instance.collection('Menu').doc(itemName);
+    DocumentReference itemRef =
+        FirebaseFirestore.instance.collection('Menu').doc(itemName);
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(itemRef);
@@ -78,11 +86,13 @@ class _AddRatingsState extends State<AddRatings> {
       double currentRating = snapshot.get('rating').toDouble();
       int numberOfReviews = snapshot.get('numberOfReviews').toInt();
       int newRatingCount = numberOfReviews + 1;
-      double newRating = (currentRating * numberOfReviews + rating) / newRatingCount;
-      if(isVip){
+      double newRating =
+          (currentRating * numberOfReviews + rating) / newRatingCount;
+      if (isVip) {
         newRating = (newRating * numberOfReviews + rating) / newRatingCount;
       }
-      transaction.update(itemRef, {'rating': newRating, 'numberOfReviews': newRatingCount});
+      transaction.update(
+          itemRef, {'rating': newRating, 'numberOfReviews': newRatingCount});
     });
   }
 
@@ -90,7 +100,8 @@ class _AddRatingsState extends State<AddRatings> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    String collectionName = feedbackType == 'compliment' ? 'Compliment' : 'Complaint';
+    String collectionName =
+        feedbackType == 'compliment' ? 'Compliment' : 'Complaint';
     String? personId = selectedChefId;
     String? personName = selectedChefName;
     if (widget.deliverer) {
@@ -122,7 +133,8 @@ class _AddRatingsState extends State<AddRatings> {
     }
 
     await FirebaseFirestore.instance.collection(collectionName).add(data);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Review Created Successfully')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Review Created Successfully')));
   }
 
   @override
@@ -149,7 +161,9 @@ class _AddRatingsState extends State<AddRatings> {
                 children: [
                   Column(
                     children: [
-                      Text('Rate Your Order', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Rate Your Order',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ],
@@ -159,7 +173,8 @@ class _AddRatingsState extends State<AddRatings> {
             DropdownButton<String>(
               value: feedbackType,
               items: const [
-                DropdownMenuItem(value: 'compliment', child: Text('Compliment')),
+                DropdownMenuItem(
+                    value: 'compliment', child: Text('Compliment')),
                 DropdownMenuItem(value: 'complaint', child: Text('Complaint')),
               ],
               onChanged: (value) {
@@ -182,7 +197,8 @@ class _AddRatingsState extends State<AddRatings> {
                 onChanged: (value) {
                   setState(() {
                     selectedChefId = value;
-                    selectedChefName = uniqueChefs.firstWhere((chef) => chef['chefId'] == value)['chefName'];
+                    selectedChefName = uniqueChefs.firstWhere(
+                        (chef) => chef['chefId'] == value)['chefName'];
                   });
                 },
               ),
@@ -199,22 +215,31 @@ class _AddRatingsState extends State<AddRatings> {
               ),
             const SizedBox(height: 20),
             if (!widget.deliverer)
-              ...widget.items.whereType<Map<String, dynamic>>().toList().asMap().entries.map((entry) {
+              ...widget.items
+                  .whereType<Map<String, dynamic>>()
+                  .toList()
+                  .asMap()
+                  .entries
+                  .map((entry) {
                 int index = entry.key;
                 var item = entry.value;
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item['itemName'], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(item['itemName'],
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                       RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
-                        itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber),
+                        itemBuilder: (context, _) =>
+                            const Icon(Icons.star, color: Colors.amber),
                         onRatingUpdate: (rating) {
                           setState(() {
                             item['rating'] = rating;
@@ -236,7 +261,8 @@ class _AddRatingsState extends State<AddRatings> {
             GestureDetector(
               onTap: () async {
                 if (!widget.deliverer) {
-                  for (var item in widget.items.whereType<Map<String, dynamic>>()) {
+                  for (var item
+                      in widget.items.whereType<Map<String, dynamic>>()) {
                     await addItemRating(
                       item['itemName'],
                       item['rating'],
@@ -256,7 +282,11 @@ class _AddRatingsState extends State<AddRatings> {
                   color: const Color(0xFF008080),
                 ),
                 child: const Center(
-                  child: Text("Submit", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                  child: Text("Submit",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
                 ),
               ),
             ),

@@ -34,8 +34,11 @@ class _ProfileState extends State<Profile> {
             GestureDetector(
                 onTap: () {
                   FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SurferHome()));
+                  // pushAndRemoveUntil eliminates all backscreen routes
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SurferHome()),
+                      (result) => false);
                 },
                 child: Icon(Icons.logout_sharp, color: Colors.black, size: 30)),
             SizedBox(width: 20),

@@ -1,4 +1,3 @@
-
 import "package:cached_network_image/cached_network_image.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
@@ -39,7 +38,7 @@ class _SurferHomeState extends State<SurferHome> {
   }
 
   ontheload() async {
-    foodStream =  FirebaseFirestore.instance
+    foodStream = FirebaseFirestore.instance
         .collection('Menu')
         .orderBy('rating', descending: true)
         .limit(10)
@@ -52,7 +51,6 @@ class _SurferHomeState extends State<SurferHome> {
     ontheload();
     super.initState();
   }
-
 
   Widget allItems() {
     return StreamBuilder(
@@ -73,16 +71,16 @@ class _SurferHomeState extends State<SurferHome> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => FoodDetails(
-                                itemName: ds[
-                                'itemName'], // Assuming 'itemName' is the field name in your document
-                                imageUrl: ds['imageUrl'],
-                                description: ds['description'],
-                                chef: ds['chef'],
-                                allergens: ds['allergens'],
-                                chefId: ds['chefId'],
-                                price: ds['price'],
-                                rating: ds['rating'],
-                              )));
+                                    itemName: ds[
+                                        'itemName'], // Assuming 'itemName' is the field name in your document
+                                    imageUrl: ds['imageUrl'],
+                                    description: ds['description'],
+                                    chef: ds['chef'],
+                                    allergens: ds['allergens'],
+                                    chefId: ds['chefId'],
+                                    price: ds['price'],
+                                    rating: ds['rating'],
+                                  )));
                     },
                     child: Container(
                       margin: const EdgeInsets.all(5),
@@ -103,9 +101,9 @@ class _SurferHomeState extends State<SurferHome> {
                                   child: CachedNetworkImage(
                                     imageUrl: ds["imageUrl"],
                                     placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
+                                        const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     width: 100,
                                     height: 100,
                                   ),
@@ -118,7 +116,7 @@ class _SurferHomeState extends State<SurferHome> {
 
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
                                       "\$${ds["price"]}",
@@ -132,7 +130,7 @@ class _SurferHomeState extends State<SurferHome> {
                                     ),
                                     Text(ds['rating'].toString(),
                                         style:
-                                        AppWidget.semiBoldTextFieldStyle()),
+                                            AppWidget.semiBoldTextFieldStyle()),
                                   ],
                                 )
                               ],
@@ -158,86 +156,86 @@ class _SurferHomeState extends State<SurferHome> {
         builder: (context, AsyncSnapshot snapshot) {
           return snapshot.hasData
               ? ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: snapshot.data.docs.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                DocumentSnapshot ds = snapshot.data.docs[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FoodDetails(
-                              itemName: ds[
-                              'itemName'], // Assuming 'itemName' is the field name in your document
-                              imageUrl: ds['imageUrl'],
-                              description: ds['description'],
-                              chef: ds['chef'],
-                              allergens: ds['allergens'],
-                              chefId: ds['chefId'],
-                              price: ds['price'],
-                              rating: ds['rating'],
-                            )));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 20.0, bottom: 30),
-                    child: Material(
-                      elevation: 5.0,
-                      borderRadius: BorderRadius.circular(20.0),
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data.docs.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FoodDetails(
+                                      itemName: ds[
+                                          'itemName'], // Assuming 'itemName' is the field name in your document
+                                      imageUrl: ds['imageUrl'],
+                                      description: ds['description'],
+                                      chef: ds['chef'],
+                                      allergens: ds['allergens'],
+                                      chefId: ds['chefId'],
+                                      price: ds['price'],
+                                      rating: ds['rating'],
+                                    )));
+                      },
                       child: Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Image.asset("images/Salad.jpg",
-                            //     cacheHeight:90,
-                            //     cacheWidth:90,
-                            //     fit: BoxFit.cover),
+                        margin: const EdgeInsets.only(right: 20.0, bottom: 30),
+                        child: Material(
+                          elevation: 5.0,
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Image.asset("images/Salad.jpg",
+                                //     cacheHeight:90,
+                                //     cacheWidth:90,
+                                //     fit: BoxFit.cover),
 
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: CachedNetworkImage(
-                                imageUrl: ds["imageUrl"],
-                                placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                                width: 90,
-                                height: 90,
-                              ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: ds["imageUrl"],
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                    width: 90,
+                                    height: 90,
+                                  ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Column(children: [
+                                  const SizedBox(height: 5.0),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    //handles the text overflow by wrapping the text
+                                    child: Text(
+                                      ds["itemName"],
+                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    //handles the text overflow by wrapping the text
+                                    child: Text(
+                                      "\$${ds["price"]}",
+                                      style: AppWidget.semiBoldTextFieldStyle(),
+                                    ),
+                                  ),
+                                ]),
+                              ],
                             ),
-                            const SizedBox(width: 20.0),
-                            Column(children: [
-                              const SizedBox(height: 5.0),
-                              SizedBox(
-                                width:
-                                MediaQuery.of(context).size.width / 2,
-                                //handles the text overflow by wrapping the text
-                                child: Text(
-                                  ds["itemName"],
-                                  style: AppWidget.semiBoldTextFieldStyle(),
-                                ),
-                              ),
-                              const SizedBox(height: 5.0),
-                              SizedBox(
-                                width:
-                                MediaQuery.of(context).size.width / 2,
-                                //handles the text overflow by wrapping the text
-                                child: Text(
-                                  "\$${ds["price"]}",
-                                  style: AppWidget.semiBoldTextFieldStyle(),
-                                ),
-                              ),
-                            ]),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              })
+                    );
+                  })
               : const CircularProgressIndicator();
         });
   }
@@ -274,7 +272,8 @@ class _SurferHomeState extends State<SurferHome> {
                 ),
                 const SizedBox(height: 20.0),
                 Container(
-                    margin: const EdgeInsets.only(right: 20.0), child: showItems()),
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: showItems()),
                 const SizedBox(height: 20.0),
 
                 SizedBox(height: 200.0, child: allItems()),
