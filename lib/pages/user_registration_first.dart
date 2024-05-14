@@ -8,7 +8,7 @@ import 'package:flutter/material.dart%20';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/pages/user_unapproved_page.dart';
 import 'package:manju_three/pages/bottomnav.dart';
-import 'package:manju_three/pages/user_info.dart';
+import 'package:manju_three/pages/user_registration_second.dart';
 
 import '../widget/widget_support.dart';
 import 'login.dart';
@@ -30,70 +30,68 @@ class _SignUpState extends State<SignUp> {
 //global key for the form
   final _formKey = GlobalKey<FormState>();
 
-// registration() async {
-//   if (password != null){
-//     try{
-//       UserCredential userCredential = await FirebaseAuth.instance.
-//       createUserWithEmailAndPassword(
-//           email: emailController.text.trim(),
-//           password: passwordController.text.trim(),
-//       );
+  registration() async {
+    if (password != null) {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
 
-//       addDetails(userCredential.user!.uid, nameController.text.trim(), emailController.text.trim());
+        addDetails(userCredential.user!.uid, nameController.text.trim(),
+            emailController.text.trim());
 
-//       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//         backgroundColor: Colors.green,
-//         content: Text("Registration Successful",
-//         style: TextStyle(fontSize: 20)),
-//       ));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.green,
+          content:
+              Text("Registration Successful", style: TextStyle(fontSize: 20)),
+        ));
 
-//       //using pushReplacement to remove the back button, the user can't go back to the signup page
-//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ApprovalPage()));
-//     } on FirebaseException catch (e){
-//       if (e.code == 'weak-password'){
-//         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//           backgroundColor: Colors.red,
-//           content: Text("The password provided is too weak",
-//           style: TextStyle(fontSize: 20)),
-//         ));
-//       } else if (e.code == 'email-already-in-use'){
-//         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//           backgroundColor: Colors.red,
-//           content: Text("The account already exists for that email",
-//           style: TextStyle(fontSize: 20)),
-//         ));
-//       }
-//     } catch (e){
-//       print(e);
-//     }
-//   }
-// }
+        //using pushReplacement to remove the back button, the user can't go back to the signup page
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ApprovalPage()));
+      } on FirebaseException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("The password provided is too weak",
+                style: TextStyle(fontSize: 20)),
+          ));
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("The account already exists for that email",
+                style: TextStyle(fontSize: 20)),
+          ));
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
 
-// Future addDetails(String uId, String name, String email) async{
-//     await FirebaseFirestore.instance.collection('users').doc(uId).set(
-//       {
-//         'name': name,
-//         'email': email,
-//         // 'role': 'chef',
-//         // 'salary': 70000.0,
-//         // 'warnings': 1,
-//         // 'ratings' : 4.9,
-//         // 'compliments': 1,
-//         // 'complaints': 1,
-//         // 'yearsOfExperience': 6,
-//         'role': 'customer',
-//         'isApproved':false,
-//         'isSuspended':false,
-//         'warning': 0,
-//         'deposit': 50.0,
-//         'totalOrders': 0,
-//         'totalSpent': 0.0,
-//         'isVip': false,
-
-//       }
-//     );
-
-// }
+  Future addDetails(String uId, String name, String email) async {
+    await FirebaseFirestore.instance.collection('users').doc(uId).set({
+      'name': name,
+      'email': email,
+      // 'role': 'chef',
+      // 'salary': 70000.0,
+      // 'warnings': 1,
+      // 'ratings' : 4.9,
+      // 'compliments': 1,
+      // 'complaints': 1,
+      // 'yearsOfExperience': 6,
+      'role': 'customer',
+      'isApproved': false,
+      'isSuspended': false,
+      'warning': 0,
+      'deposit': 50.0,
+      'totalOrders': 0,
+      'totalSpent': 0.0,
+      'isVip': false,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

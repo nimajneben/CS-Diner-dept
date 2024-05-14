@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manju_three/widget/widget_support.dart';
-import 'package:manju_three/pages/user_registration.dart';
+import 'package:manju_three/pages/user_registration_first.dart';
 
 class ManagerProfile extends StatefulWidget {
   const ManagerProfile({super.key});

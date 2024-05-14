@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/pages/login.dart';
+import 'package:manju_three/pages/user_unapproved_page.dart';
 
 import '../widget/widget_support.dart';
 // import 'approval_page.dart';
@@ -53,7 +54,8 @@ class _SecondPageState extends State<SecondPage> {
               Text("Registration Successful", style: TextStyle(fontSize: 20)),
         ));
 
-        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ApprovalPage()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ApprovalPage()));
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
