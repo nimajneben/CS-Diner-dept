@@ -82,7 +82,7 @@ class _ManagerHomeState extends State<ManagerHome> {
             context,
             MaterialPageRoute(builder: (context) => ManagerDecision()), 
           );
-        } else if (title == 'Dispute Verdict') { // Navigate to the DisputeVerdict screen when this option is selected
+        } else if (title == 'Dispute Verdict') { 
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DisputeVerdict()),
