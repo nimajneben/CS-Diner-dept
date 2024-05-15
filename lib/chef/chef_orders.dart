@@ -4,42 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manju_three/pages/login.dart';
 import 'package:manju_three/chef/chef_home.dart';
 
-// SERVE ORDERS --
-//       >> Display All Orders (Menu Item Names) -- shows items they're responsible for
-//       >> 'SERVED' Button -- click after serving each items
-//       >> Firestore 'Orders' database :
-//                >> 'isOrderComplete' == true
-//                >> 'items' map -- itemName (string), price (number), quantity (number),
-//                                  chef (string), chefId (string), isReady (boolean)
-
-class Item {
-  final String name;
-  final int quantity;
-  final String chefId;
-  final bool isReady;
-
-  Item(
-      {required this.name,
-      required this.quantity,
-      required this.chefId,
-      required this.isReady}
-  );
-}
-
-class Order {
-  final String orderId;
-  final bool isOrderComplete;
-  final List<Item> items;
-
-  Order(
-      {required this.orderId,
-      required this.isOrderComplete,
-      required this.items}
-  );
-}
-
 class OrdersPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -66,103 +33,61 @@ class OrdersPage extends StatelessWidget {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
+        stream: _firestore
             .collection('Orders')
             .where('isOrderComplete', isEqualTo: false)
+            .where('items.chefId', isEqualTo: chefID)
             .snapshots(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
+          if (!snapshot.hasData) {
+             return const Text('Sorry! Please try again later.');
+         }
 
-          final orders = snapshot.data!.docs.map((doc) {
-            final itemsMap = Map<String, dynamic>.from(doc['items']);
-            final List<Item> items = [];
-            itemsMap.forEach((key, value) {
-              if (value['chefId'] == chefID) {
-                items.add(Item(
-                  name: value['itemName'],
-                  quantity: value['quantity'],
-                  chefId: value['chefId'],
-                  isReady: value['isReady'],
-                ));
-              }
-            });
-            
-            return Order(
-                orderId: doc.id,
-                isOrderComplete: doc['isOrderComplete'],
-                items: items);
-          }).toList();
-
-          return ListView.builder(
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              final order = orders[index];
-              final chefItems = order.items;
+         return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              List<Widget> itemList = [];
+              data['items'].forEach((item) {
+                itemList.add(Text('Item: ${item['itemName']}, Quantity: ${item['quantity']}'));
+              });
               
               return ListTile(
-                title: Text('Order ID: ${order.orderId}'),
+                title: Text('Order ID: ${data['orderId']}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: chefItems
-                      .map((item) => Text('Item: ${item.name}, Quantity: ${item.quantity}'))
-                      .toList(),
-                ),
-                trailing: Column(
-                  children: chefItems.map((item) {
-                    return ElevatedButton(
+                    children: itemList,
+                  ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      child: const Text('SERVED'),
                       onPressed: () {
-                        FirebaseFirestore.instance
-                            .collection('Orders')
-                            .doc(order.orderId)
-                            .get()
-                            .then((DocumentSnapshot documentSnapshot) {
-                              if (documentSnapshot.exists) {
-                                Map<String, dynamic> items = documentSnapshot['items'];
-                                String itemKey = items.keys.firstWhere(
-                                  (k) => items[k]['itemName'] == item.name && items[k]['chefId'] == chefID,
-                                  orElse: () => '',
-                                );
-                                if (itemKey != null) {
-                                  items[itemKey]['isReady'] = true;
-                                  FirebaseFirestore.instance
-                                      .collection('Orders')
-                                      .doc(order.orderId)
-                                      .update({'items': items}).then((value) {
-                                        print('Item is served: ${item.name}');
-                                        _checkOrderComplete(order, items);
-                                  });
-                                }
-                              } else {
-                                print('Document does not exist on the database');
-                              }
-                            });
+                        document.reference.update({'isReady': true});
+                        _checkOrderComplete(data['orderId'], data['items']);
                       },
-                      child: Text('SERVED'),
-                    );
-                  }).toList(),
+                    )
+                  ],
                 ),
               );
-            },
+            }).toList(),
           );
         },
       ),
     );
   }
 
-  void _checkOrderComplete(Order order, Map<String, dynamic> items) {
-    final allItemsReady = items.values.every((item) => item['isReady']);
-    if (allItemsReady) {
-      FirebaseFirestore.instance
-          .collection('Orders')
-          .doc(order.orderId)
-          .update({
-            'isOrderComplete': true,
-          })
+  void _checkOrderComplete(String orderId, List<dynamic> items) {
+  bool allReady = items.every((item) => item['isReady'] == true);
+    if (allReady) {
+      _firestore.collection('Orders').doc(orderId).update({'isOrderComplete': true})
           .then((_) => print('Order is complete: ${order.orderId}'))
           .catchError((error) => print('Error updating order: $error'));
     }
