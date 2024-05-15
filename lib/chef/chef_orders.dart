@@ -88,7 +88,7 @@ class OrdersPage extends StatelessWidget {
   bool allReady = items.every((item) => item['isReady'] == true);
     if (allReady) {
       _firestore.collection('Orders').doc(orderId).update({'isOrderComplete': true})
-          .then((_) => print('Order is complete: ${order.orderId}'))
+          .then((_) => print('Order is complete: ${orderId}'))
           .catchError((error) => print('Error updating order: $error'));
     }
   }
