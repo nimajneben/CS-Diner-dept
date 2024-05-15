@@ -8,6 +8,7 @@ class ManagerDecision extends StatefulWidget {
 
 class _ManagerDecisionState extends State<ManagerDecision> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Set<String> reviewedComplaints = {}; 
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,9 @@ class _ManagerDecisionState extends State<ManagerDecision> {
         title: Text('Manager Decision'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('complaints').snapshots(),
+        stream: _firestore.collection('complaints')
+            .where('status', isEqualTo: 'Customer')
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -28,19 +31,37 @@ class _ManagerDecisionState extends State<ManagerDecision> {
 
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              if (reviewedComplaints.contains(document.id)) {
+                return Container(); 
+              }
               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+              String? subject = data['subject'];
+              String? description = data['description'];
+              if (subject == null || description == null) {
+                return Container();
+              }
               return ListTile(
-                title: Text(data['subject']),
-                subtitle: Text(data['description']),
+                title: Text('Name: ${data['name']}, Date: ${data['date'].toDate()}'),
+                subtitle: Text('Location: ${data['location']}, Address: ${data['address']}, Address2: ${data['status']}, Description: ${data['description']}, Accuse Name: ${data['accuseName']}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ElevatedButton(
-                      onPressed: () => _updateVerdict(document.id, true),
+                      onPressed: () {
+                        _updateVerdict(document.id, true, 'guilty'); 
+                        setState(() {
+                          reviewedComplaints.add(document.id); 
+                        });
+                      },
                       child: Text('Guilty'),
                     ),
                     ElevatedButton(
-                      onPressed: () => _updateVerdict(document.id, false),
+                      onPressed: () {
+                        _updateVerdict(document.id, true, 'not guilty'); 
+                        setState(() {
+                          reviewedComplaints.add(document.id); 
+                        });
+                      },
                       child: Text('Not Guilty'),
                     ),
                   ],
@@ -53,11 +74,11 @@ class _ManagerDecisionState extends State<ManagerDecision> {
     );
   }
 
-  Future<void> _updateVerdict(String id, bool verdict) {
+  Future<void> _updateVerdict(String id, bool reviewed, String verdict) {
     return _firestore
         .collection('complaints')
         .doc(id)
-        .update({'mgr_verdict': verdict})
+        .update({'mgr_reviewed': reviewed, 'mgr_verdict': verdict})
         .then((value) => print("Verdict Updated"))
         .catchError((error) => print("Failed to update verdict: $error"));
   }
