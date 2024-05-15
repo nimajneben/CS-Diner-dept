@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manju_three/Manager/manager_complaints.dart'; 
+import 'package:manju_three/Manager/manager_dispute.dart'; 
 import 'package:manju_three/methods/data.dart';
 import 'package:manju_three/pages/surfer_home.dart';
 import 'package:manju_three/widget/widget_support.dart';
@@ -73,7 +74,26 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-            )
+            ),
+            SizedBox(height: 30), // Add some space before the button
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManagerComplaints()),
+                );
+              },
+              child: Text('Complaints'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManagerDispute()),
+                );
+              },
+              child: Text('Dispute'),
+            ),
           ],
         ),
       ),
