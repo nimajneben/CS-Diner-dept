@@ -8,7 +8,8 @@ class ChefIngredient {
   final int amount;
   final bool needRestock;
 
-  ChefIngredient({required this.id, required this.amount, required this.needRestock});
+  ChefIngredient(
+      {required this.id, required this.amount, required this.needRestock});
 
   factory ChefIngredient.fromDocument(DocumentSnapshot doc) {
     return ChefIngredient(
@@ -21,7 +22,7 @@ class ChefIngredient {
 
 class ChefIngredientsPage extends StatefulWidget {
   @override
-    _ChefIngredientsPageState createState() => _ChefIngredientsPageState();
+  _ChefIngredientsPageState createState() => _ChefIngredientsPageState();
 }
 
 class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
@@ -35,7 +36,7 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -76,43 +77,48 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
             itemCount: ingredients.length,
             itemBuilder: (context, index) {
               final ingredient = ingredients[index];
-              return 
-                ListTile(
-                title: Text('ID: ${ingredient.id}'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Amount: ${ingredient.amount}'),
-                    Text('Need Restock: ${ingredient.needRestock}'),
-                  ],
-                ),
-                trailing: SizedBox(
-                  width: 150;
-                  child: Column(
-                  children: [
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) => updateInputValue(value),
+              return ListTile(
+                  title: Text('ID: ${ingredient.id}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Amount: ${ingredient.amount}'),
+                      Text('Need Restock: ${ingredient.needRestock}'),
+                    ],
+                  ),
+                  trailing: SizedBox(
+                    width: 150,
+                    child: SingleChildScrollView(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) => updateInputValue(value),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('Ingredients')
+                                  .doc(ingredient.id)
+                                  .update({
+                                    'amount': FieldValue.increment(_inputValue),
+                                    'needRestock':
+                                        (ingredient.amount + _inputValue) <
+                                            10, // true if new amount < 10
+                                  })
+                                  .then((_) =>
+                                      print('Inventory updated successfully'))
+                                  .catchError((error) => print(
+                                      'Error updating inventory: $error'));
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        FirebaseFirestore.instance
-                            .collection('Ingredients')
-                            .doc(ingredient.id)
-                            .update({
-                              'amount': FieldValue.increment(_inputValue),
-                              'needRestock': (ingredient.amount + _inputValue) < 10, // true if new amount < 10
-                            })
-                            .then((_) => print('Inventory updated successfully'))
-                            .catchError((error) =>
-                                print('Error updating inventory: $error'));
-                      },
-                      child: Text('GET'),
-                    ),
-                  ],
-                ),
-                ),
-              );
+                  ));
             },
           );
         },
