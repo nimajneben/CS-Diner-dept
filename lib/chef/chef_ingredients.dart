@@ -87,8 +87,8 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
                   ],
                 ),
                 trailing: SizedBox(
-                  width: 150;
-                  child: Column(
+                  width: 150,
+                  child: SingleChildScrollView(
                   children: [
                     TextField(
                       keyboardType: TextInputType.number,
