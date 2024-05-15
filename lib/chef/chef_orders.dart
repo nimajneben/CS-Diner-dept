@@ -125,7 +125,7 @@ class OrdersPage extends StatelessWidget {
                                 Map<String, dynamic> items = documentSnapshot['items'];
                                 String itemKey = items.keys.firstWhere(
                                   (k) => items[k]['itemName'] == item.name && items[k]['chefId'] == chefID,
-                                  orElse: () => null,
+                                  orElse: () => '',
                                 );
                                 if (itemKey != null) {
                                   items[itemKey]['isReady'] = true;
