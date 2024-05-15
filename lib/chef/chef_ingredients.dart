@@ -3,13 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manju_three/pages/login.dart';
 
-// CHEFS MANUALLY UPDATE INGREDIENTS
-//       >> Display Ingredients
-//       >> Integer Input & 'GET' Button
-//       >> Firestore 'Ingredients' database :
-//                >> 'amount' increases by integer value
-//                >> 'needRestock' == true if 'amount' < 10
-
 class ChefIngredient {
   final String id;
   final int amount;
@@ -83,7 +76,8 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
             itemCount: ingredients.length,
             itemBuilder: (context, index) {
               final ingredient = ingredients[index];
-              return ListTile(
+              return 
+                ListTile(
                 title: Text('ID: ${ingredient.id}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +86,9 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
                     Text('Need Restock: ${ingredient.needRestock}'),
                   ],
                 ),
-                trailing: Column(
+                trailing: SizedBox(
+                  width: 150;
+                  child: Column(
                   children: [
                     TextField(
                       keyboardType: TextInputType.number,
@@ -114,6 +110,7 @@ class _ChefIngredientsPageState extends State<ChefIngredientsPage> {
                       child: Text('GET'),
                     ),
                   ],
+                ),
                 ),
               );
             },
