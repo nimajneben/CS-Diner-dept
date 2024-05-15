@@ -138,7 +138,7 @@ class _ManagerDisputeState extends State<ManagerDispute> {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 30), // Add space
+              SizedBox(height: 30),
               Text(
                 'Dispute Information',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
