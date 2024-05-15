@@ -36,7 +36,7 @@ class _ManagerProfileState extends State<ManagerProfile> {
               margin: EdgeInsets.only(top: 20),
               child: CircleAvatar(
                 radius: 150,
-                backgroundImage: AssetImage("images/profile1.jpg"),
+                backgroundImage: AssetImage("assets/images/profile1.jpg"),
               ),
             ),
             SizedBox(height: 50),

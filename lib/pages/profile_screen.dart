@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
               margin: EdgeInsets.only(top: 20),
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage("images/profile1.jpg"),
+                backgroundImage: AssetImage("assets/images/profile1.jpg"),
               ),
             ),
             SizedBox(

@@ -38,7 +38,7 @@ class _SurferHomeState extends State<SurferHome> {
   }
 
   ontheload() async {
-    foodStream =  FirebaseFirestore.instance
+    foodStream = FirebaseFirestore.instance
         .collection('Menu')
         .orderBy('rating', descending: true)
         .limit(10)
@@ -51,7 +51,6 @@ class _SurferHomeState extends State<SurferHome> {
     ontheload();
     super.initState();
   }
-
 
   Widget allItems() {
     return StreamBuilder(
@@ -190,7 +189,7 @@ class _SurferHomeState extends State<SurferHome> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Image.asset("images/Salad.jpg",
+                                // Image.asset("assets/images/Salad.jpg",
                                 //     cacheHeight:90,
                                 //     cacheWidth:90,
                                 //     fit: BoxFit.cover),
@@ -273,7 +272,8 @@ class _SurferHomeState extends State<SurferHome> {
                 ),
                 const SizedBox(height: 20.0),
                 Container(
-                    margin: const EdgeInsets.only(right: 20.0), child: showItems()),
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: showItems()),
                 const SizedBox(height: 20.0),
 
                 SizedBox(height: 200.0, child: allItems()),
@@ -316,7 +316,7 @@ class _SurferHomeState extends State<SurferHome> {
                     borderRadius: BorderRadius.circular(10.0)),
                 padding: const EdgeInsets.all(2),
                 child: Image.asset(
-                  "images/Salad.jpg",
+                  "assets/images/Salad.jpg",
                   cacheHeight: 70,
                   cacheWidth: 70,
                   fit: BoxFit.cover,
@@ -341,7 +341,7 @@ class _SurferHomeState extends State<SurferHome> {
                     borderRadius: BorderRadius.circular(10.0)),
                 padding: const EdgeInsets.all(2),
                 child: Image.asset(
-                  "images/main.jpg",
+                  "assets/images/main.jpg",
                   cacheHeight: 70,
                   cacheWidth: 70,
                   fit: BoxFit.cover,
@@ -368,7 +368,7 @@ class _SurferHomeState extends State<SurferHome> {
                     borderRadius: BorderRadius.circular(10.0)),
                 padding: const EdgeInsets.all(2),
                 child: Image.asset(
-                  "images/dessert.jpg",
+                  "assets/images/dessert.jpg",
                   cacheHeight: 70,
                   cacheWidth: 70,
                   fit: BoxFit.cover,
@@ -394,7 +394,7 @@ class _SurferHomeState extends State<SurferHome> {
                     borderRadius: BorderRadius.circular(10.0)),
                 padding: const EdgeInsets.all(2),
                 child: Image.asset(
-                  "images/soda.jpg",
+                  "assets/images/soda.jpg",
                   cacheHeight: 70,
                   cacheWidth: 70,
                   fit: BoxFit.cover,

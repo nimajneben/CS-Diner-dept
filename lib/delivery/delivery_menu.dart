@@ -121,7 +121,8 @@ class _DeliveryMainScreenState extends State<DeliveryMainScreen> {
                       margin: EdgeInsets.only(top: 20),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage("images/profile1.jpg"),
+                        backgroundImage:
+                            AssetImage("assets/images/profile1.jpg"),
                       ),
                     ),
                     SizedBox(

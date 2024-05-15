@@ -37,7 +37,7 @@ class _WalletState extends State<Wallet> {
           child: Row(
             children: [
               Image.asset(
-                "images/wallet_02.jpg",
+                "assets/images/wallet_02.jpg",
                 cacheHeight: 70,
                 cacheWidth: 70,
               ),

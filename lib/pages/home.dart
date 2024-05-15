@@ -78,9 +78,9 @@ class _HomeState extends State<Home> {
                             child: CachedNetworkImage(
                               imageUrl: ds["imageUrl"],
                               placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
+                                  const CircularProgressIndicator(),
                               errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                                  const Icon(Icons.error),
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
@@ -177,9 +177,9 @@ class _HomeState extends State<Home> {
                             child: CachedNetworkImage(
                               imageUrl: ds["imageUrl"],
                               placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
+                                  const CircularProgressIndicator(),
                               errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                                  const Icon(Icons.error),
                               width: 90,
                               height: 90,
                               fit: BoxFit.cover,
@@ -242,8 +242,7 @@ class _HomeState extends State<Home> {
                   FutureBuilder<String>(
                     future: fetchUserName(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text(
                           "Loading...",
                           style: AppWidget.boldTextFieldStyle(),
@@ -342,7 +341,7 @@ class _HomeState extends State<Home> {
               ),
               padding: const EdgeInsets.all(2),
               child: Image.asset(
-                "images/Salad.jpg",
+                "assets/images/Salad.jpg",
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,
@@ -369,7 +368,7 @@ class _HomeState extends State<Home> {
               ),
               padding: const EdgeInsets.all(2),
               child: Image.asset(
-                "images/main.jpg",
+                "assets/images/main.jpg",
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,
@@ -396,7 +395,7 @@ class _HomeState extends State<Home> {
               ),
               padding: const EdgeInsets.all(2),
               child: Image.asset(
-                "images/dessert.jpg",
+                "assets/images/dessert.jpg",
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,
@@ -423,7 +422,7 @@ class _HomeState extends State<Home> {
               ),
               padding: const EdgeInsets.all(2),
               child: Image.asset(
-                "images/soda.jpg",
+                "assets/images/soda.jpg",
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,

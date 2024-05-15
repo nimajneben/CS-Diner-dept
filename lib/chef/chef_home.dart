@@ -54,7 +54,7 @@ class _ChefHomeState extends State<ChefHome> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Image.asset(
-                      "images/dessert.jpg",
+                      "assets/images/dessert.jpg",
                       cacheHeight: 100,
                       cacheWidth: 100,
                     ),
