@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:manju_three/Manager/manager_approval.dart';
-import 'package:manju_three/Manager/manager_guilty.dart';
+import 'package:manju_three/Manager/manager_decision.dart'; 
+import 'package:manju_three/Manager/dispute_verdict.dart'; 
 
 class ManagerHome extends StatefulWidget {
   const ManagerHome({super.key});
@@ -40,8 +41,7 @@ class _ManagerHomeState extends State<ManagerHome> {
                       _buildGridItem('Customer Registration', context),
                       _buildGridItem('De-register customers', context),
                       _buildGridItem('Compliments', context),
-                      _buildGridItem('Complaints',
-                          context),
+                      _buildGridItem('Complaints', context), 
                     ],
                   ),
                 ),
@@ -57,6 +57,7 @@ class _ManagerHomeState extends State<ManagerHome> {
                       _buildGridItem('Manage Salary', context),
                       _buildGridItem('Promote', context),
                       _buildGridItem('Demote', context),
+                      _buildGridItem('Dispute Verdict', context), 
                     ],
                   ),
                 ),
@@ -79,7 +80,12 @@ class _ManagerHomeState extends State<ManagerHome> {
         } else if (title == 'Complaints') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ManagerGuilty()),
+            MaterialPageRoute(builder: (context) => ManagerDecision()), 
+          );
+        } else if (title == 'Dispute Verdict') { 
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DisputeVerdict()),
           );
         } else {
           print('$title clicked');
